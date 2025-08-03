@@ -1,0 +1,159 @@
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { FileText, Image, Video, Eye, Edit2, Trash2 } from "lucide-react";
+import type { ContentItem } from "@shared/schema";
+
+interface ContentCardProps {
+  item: ContentItem;
+  isAdmin?: boolean;
+  onEdit?: (item: ContentItem) => void;
+  onDelete?: (id: string) => void;
+}
+
+export function ContentCard({ item, isAdmin = false, onEdit, onDelete }: ContentCardProps) {
+  const getIcon = () => {
+    switch (item.type) {
+      case "text":
+        return <FileText className="text-coral" size={20} />;
+      case "image":
+        return <Image className="text-turquoise" size={20} />;
+      case "video":
+        return <Video className="text-sky" size={20} />;
+      default:
+        return <FileText className="text-coral" size={20} />;
+    }
+  };
+
+  const getBadgeColor = () => {
+    switch (item.type) {
+      case "text":
+        return "bg-coral text-white";
+      case "image":
+        return "bg-turquoise text-white";
+      case "video":
+        return "bg-sky text-white";
+      default:
+        return "bg-coral text-white";
+    }
+  };
+
+  const formatDate = (date: Date | null) => {
+    if (!date) return "";
+    return new Date(date).toLocaleDateString("vi-VN");
+  };
+
+  if (isAdmin) {
+    return (
+      <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center space-x-3">
+            {getIcon()}
+            <h4 className="font-medium text-slate">{item.title}</h4>
+            <Badge className={getBadgeColor()}>
+              {item.type === "text" ? "Text" : item.type === "image" ? "Hình ảnh" : "Video"}
+            </Badge>
+          </div>
+          <div className="flex space-x-2">
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={() => onEdit?.(item)}
+              className="text-turquoise hover:text-sky hover:bg-turquoise/10"
+            >
+              <Edit2 size={16} />
+            </Button>
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={() => onDelete?.(item.id)}
+              className="text-red-500 hover:text-red-700 hover:bg-red-50"
+            >
+              <Trash2 size={16} />
+            </Button>
+          </div>
+        </div>
+        <p className="text-gray-600 text-sm mb-3">
+          {item.content || item.excerpt || "Không có mô tả"}
+        </p>
+        <div className="text-xs text-gray-500">
+          Cập nhật: {formatDate(item.updatedAt)}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <Card className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden card-hover">
+      {item.type === "image" && item.mediaUrl && (
+        <img 
+          src={item.mediaUrl} 
+          alt={item.title}
+          className="w-full h-48 object-cover"
+        />
+      )}
+      {item.type === "video" && item.mediaUrl && (
+        <div className="relative">
+          <img 
+            src={item.mediaUrl} 
+            alt={item.title}
+            className="w-full h-48 object-cover"
+          />
+          <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
+            <div className="w-16 h-16 bg-white bg-opacity-90 rounded-full flex items-center justify-center hover:bg-opacity-100 transition-all duration-300">
+              <Video className="text-coral ml-1" size={20} />
+            </div>
+          </div>
+        </div>
+      )}
+      
+      <CardContent className="p-6">
+        {item.type === "text" && (
+          <div className="w-12 h-12 bg-gradient-to-br from-coral to-turquoise rounded-lg flex items-center justify-center mb-4">
+            <FileText className="text-white" size={20} />
+          </div>
+        )}
+        
+        <h3 className="text-xl font-poppins font-semibold text-slate mb-3">
+          {item.title}
+        </h3>
+        
+        <p className="text-gray-600 mb-4">
+          {item.excerpt || item.content?.substring(0, 100) + "..." || ""}
+        </p>
+        
+        <div className="flex items-center justify-between">
+          <span className="text-sm text-gray-500">
+            {formatDate(item.createdAt)}
+          </span>
+          
+          {item.type === "text" ? (
+            <span className="text-coral hover:text-turquoise transition-colors duration-300 cursor-pointer">
+              Đọc thêm →
+            </span>
+          ) : (
+            <Button 
+              size="sm"
+              className="bg-turquoise text-white hover:bg-sky transition-colors duration-300"
+            >
+              <Eye className="mr-1" size={16} />
+              Xem
+            </Button>
+          )}
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+export function EmptyContentCard() {
+  return (
+    <div className="bg-gray-50 border-2 border-dashed border-gray-300 rounded-2xl p-8 text-center min-h-[300px] flex flex-col items-center justify-center">
+      <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mb-4">
+        <FileText className="text-gray-400" size={24} />
+      </div>
+      <h3 className="text-lg font-medium text-gray-500 mb-2">Chưa khả dụng</h3>
+      <p className="text-gray-400 text-sm">Nội dung sẽ được thêm vào sau</p>
+    </div>
+  );
+}
