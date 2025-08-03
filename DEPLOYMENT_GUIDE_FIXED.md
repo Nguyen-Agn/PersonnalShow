@@ -14,6 +14,10 @@
 - **Nguyên nhân**: Thiếu content paths và config files trong client folder
 - **Giải pháp**: Tạo riêng `client/tailwind.config.ts` và `client/postcss.config.js`
 
+### 4. Lỗi Vercel Function Runtime
+- **Nguyên nhân**: Runtime `nodejs20.x` không valid, conflict với `api/index.ts`
+- **Giải pháp**: Dùng `@vercel/node@3.2.1` và xóa `api/index.ts`
+
 ## Cấu hình mới
 
 ### vercel.json (đã sửa)
@@ -24,7 +28,7 @@
   "outputDirectory": "client/dist",
   "functions": {
     "api/index.js": {
-      "runtime": "nodejs20.x"
+      "runtime": "@vercel/node@3.2.1"
     }
   },
   "routes": [
