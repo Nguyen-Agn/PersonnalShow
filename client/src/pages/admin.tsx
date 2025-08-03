@@ -500,8 +500,8 @@ export function AdminPage() {
                           };
                         }}
                         onComplete={(result: UploadResult<Record<string, unknown>, Record<string, unknown>>) => {
-                          if (result.successful.length > 0) {
-                            const uploadURL = result.successful[0].uploadURL;
+                          if (result?.successful && result.successful.length > 0) {
+                            const uploadURL = result.successful[0]?.uploadURL;
                             
                             // Set ACL policy for the uploaded file
                             fetch('/api/uploaded-content', {
@@ -520,12 +520,12 @@ export function AdminPage() {
                               console.error('Error setting file ACL:', error);
                               // Fallback to offline storage
                               OfflineStorage.saveOfflineFile({
-                                url: uploadURL,
+                                url: uploadURL || '',
                                 timestamp: Date.now(),
                                 name: `profile_${Date.now()}`,
                                 type: 'profile'
                               });
-                              setIntroValue("profileImage", uploadURL);
+                              setIntroValue("profileImage", uploadURL || '');
                               toast({
                                 title: "Chế độ offline", 
                                 description: "Ảnh đã được lưu tạm thời. Sẽ tự động đồng bộ khi có kết nối!",

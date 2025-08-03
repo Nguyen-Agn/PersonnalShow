@@ -106,9 +106,7 @@ export function AdminLogin({ isOpen, onClose, onSuccess }: AdminLoginProps) {
             </div>
           </div>
 
-          <div className="text-sm text-gray-500 bg-gray-50 p-3 rounded-lg">
-            <strong>Gợi ý:</strong> Mật khẩu mặc định là "admin2025"
-          </div>
+
 
           <div className="flex space-x-4">
             <Button

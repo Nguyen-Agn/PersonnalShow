@@ -68,7 +68,7 @@ ${intro?.description || 'Tôi tạo ra những trải nghiệm số đẹp và c
 
 === KỸ NĂNG CHUYÊN MÔN ===
 
-${other?.skills?.map(skill => `• ${skill.name}: ${skill.description}`).join('\n') || 
+${other?.skills?.map((skill: any) => `• ${skill.name}: ${skill.description}`).join('\n') || 
 '• UI/UX Design: Thiết kế giao diện người dùng sáng tạo\n• Frontend: Phát triển giao diện web hiện đại\n• Mobile Design: Thiết kế ứng dụng di động'}
 
 === THÔNG TIN LIÊN HỆ ===
