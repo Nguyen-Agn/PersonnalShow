@@ -1,0 +1,94 @@
+%PDF-1.4
+1 0 obj
+<<
+/Type /Catalog
+/Pages 2 0 R
+>>
+endobj
+2 0 obj
+<<
+/Type /Pages
+/Kids [3 0 R]
+/Count 1
+>>
+endobj
+3 0 obj
+<<
+/Type /Page
+/Parent 2 0 R
+/MediaBox [0 0 612 792]
+/Contents 4 0 R
+/Resources <<
+/ProcSet [/PDF /Text]
+/Font <<
+/F1 5 0 R
+>>
+>>
+>>
+endobj
+4 0 obj
+<<
+/Length 1000
+>>
+stream
+BT
+/F1 16 Tf
+50 750 Td
+(CURRICULUM VITAE) Tj
+0 -50 Td
+/F1 12 Tf
+(Ho va ten: Creative Designer) Tj
+0 -20 Td
+(Email: hello@portfolio.com) Tj
+0 -20 Td
+(Dien thoai: +84 123 456 789) Tj
+0 -20 Td
+(Dia chi: Ha Noi, Viet Nam) Tj
+0 -40 Td
+/F1 14 Tf
+(KINH NGHIEM LAM VIEC) Tj
+0 -30 Td
+/F1 12 Tf
+(UI/UX Designer - 2022 den hien tai) Tj
+0 -15 Td
+(- Thiet ke giao dien nguoi dung sang tao) Tj
+0 -15 Td
+(- Tao wireframe va prototype) Tj
+0 -30 Td
+(Frontend Developer - 2021-2022) Tj
+0 -15 Td
+(- Phat trien giao dien web hien dai voi React) Tj
+0 -15 Td
+(- Responsive design cho moi thiet bi) Tj
+0 -40 Td
+/F1 14 Tf
+(KY NANG CHUYEN MON) Tj
+0 -20 Td
+/F1 12 Tf
+(UI/UX Design, Frontend Development, Mobile Design) Tj
+ET
+endstream
+endobj
+5 0 obj
+<<
+/Type /Font
+/Subtype /Type1
+/BaseFont /Helvetica
+>>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000010 00000 n 
+0000000060 00000 n 
+0000000120 00000 n 
+0000000290 00000 n 
+0000001350 00000 n 
+trailer
+<<
+/Size 6
+/Root 1 0 R
+>>
+startxref
+1420
+%%EOF
