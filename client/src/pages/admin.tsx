@@ -316,8 +316,38 @@ export function AdminPage() {
   });
 
   const handleDeleteSection = (id: string) => {
+    if (id === "default") {
+      toast({
+        title: "Lỗi",
+        description: "Không thể xóa section mặc định",
+        variant: "destructive",
+      });
+      return;
+    }
+    
     if (confirm("Bạn có chắc chắn muốn xóa section này?")) {
       deleteSectionMutation.mutate(id);
+    }
+  };
+
+  const handleDeleteItem = async (id: string) => {
+    if (confirm("Bạn có chắc chắn muốn xóa item này?")) {
+      try {
+        const response = await apiRequest("DELETE", `/api/content/${id}`);
+        if (response.ok) {
+          queryClient.invalidateQueries({ queryKey: ["/api/content"] });
+          toast({
+            title: "Thành công",
+            description: "Item đã được xóa",
+          });
+        }
+      } catch (error) {
+        toast({
+          title: "Lỗi",
+          description: "Không thể xóa item",
+          variant: "destructive",
+        });
+      }
     }
   };
 
@@ -524,7 +554,7 @@ export function AdminPage() {
                                   {section.type}
                                 </span>
                                 <span className="px-2 py-1 bg-green-100 text-green-800 rounded text-xs">
-                                  {section.items?.length || 0} items
+                                  {contentItems.filter(item => item.sectionId === section.id || (!item.sectionId && section.id === "default")).length} items
                                 </span>
                               </div>
                             </div>
@@ -539,37 +569,69 @@ export function AdminPage() {
                               >
                                 <Edit size={16} />
                               </Button>
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() => handleDeleteSection(section.id)}
-                                className="text-red-600 hover:text-red-700"
-                              >
-                                <Trash2 size={16} />
-                              </Button>
+                              {section.id !== "default" && (
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => handleDeleteSection(section.id)}
+                                  className="text-red-600 hover:text-red-700"
+                                >
+                                  <Trash2 size={16} />
+                                </Button>
+                              )}
                             </div>
                           </div>
                           
-                          {section.items && section.items.length > 0 && (
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mt-4">
-                              {section.items.map((item, index) => (
-                                <div
-                                  key={item.id}
-                                  className="p-3 border rounded-lg bg-gray-50"
-                                >
-                                  <div className="flex items-center gap-2 mb-2">
-                                    {item.type === 'text' && <FileText size={14} />}
-                                    {item.type === 'image' && <Image size={14} />}
-                                    {item.type === 'video' && <Video size={14} />}
-                                    <h5 className="font-medium text-sm">{item.title}</h5>
+                          {(() => {
+                            const sectionItems = contentItems.filter(item => item.sectionId === section.id || (!item.sectionId && section.id === "default"));
+                            return sectionItems.length > 0 && (
+                              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mt-4">
+                                {sectionItems.map((item, index) => (
+                                  <div
+                                    key={item.id}
+                                    className="p-3 border rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors"
+                                  >
+                                    <div className="flex items-center justify-between mb-2">
+                                      <div className="flex items-center gap-2">
+                                        {item.type === 'text' && <FileText size={14} className="text-coral" />}
+                                        {item.type === 'image' && <Image size={14} className="text-turquoise" />}
+                                        {item.type === 'video' && <Video size={14} className="text-sky" />}
+                                        <h5 className="font-medium text-sm">{item.title}</h5>
+                                      </div>
+                                      <div className="flex gap-1">
+                                        <Button
+                                          variant="ghost"
+                                          size="sm"
+                                          onClick={() => {
+                                            setEditingItem(item);
+                                            setSelectedSectionId(section.id);
+                                            setIsAddModalOpen(true);
+                                          }}
+                                          className="h-6 w-6 p-0 hover:bg-blue-100"
+                                        >
+                                          <Edit size={12} className="text-blue-600" />
+                                        </Button>
+                                        <Button
+                                          variant="ghost"
+                                          size="sm"
+                                          onClick={() => handleDeleteItem(item.id)}
+                                          className="h-6 w-6 p-0 hover:bg-red-100"
+                                        >
+                                          <Trash2 size={12} className="text-red-600" />
+                                        </Button>
+                                      </div>
+                                    </div>
+                                    {item.excerpt && (
+                                      <p className="text-xs text-gray-600">{item.excerpt}</p>
+                                    )}
+                                    <div className="text-xs text-gray-400 mt-1">
+                                      {item.type}
+                                    </div>
                                   </div>
-                                  {item.description && (
-                                    <p className="text-xs text-gray-600">{item.description}</p>
-                                  )}
-                                </div>
-                              ))}
-                            </div>
-                          )}
+                                ))}
+                              </div>
+                            );
+                          })()}
                           
                           <div className="flex justify-end mt-4">
                             <Button
