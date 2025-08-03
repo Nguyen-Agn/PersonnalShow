@@ -83,7 +83,7 @@ export class MemStorage implements IStorage {
       updatedAt: new Date(),
     };
 
-    // Create default section
+    // Create default sections
     const defaultSection: CustomSection = {
       id: "default",
       title: "Trang chính",
@@ -96,6 +96,20 @@ export class MemStorage implements IStorage {
       updatedAt: new Date(),
     };
     this.customSections.set("default", defaultSection);
+
+    // Create "Nội dung của tôi" section
+    const myContentSection: CustomSection = {
+      id: "my-content",
+      title: "Nội dung của tôi",
+      description: "Các dự án và tác phẩm cá nhân",
+      type: "grid",
+      order: "1",
+      backgroundColor: "bg-white",
+      items: [],
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    this.customSections.set("my-content", myContentSection);
   }
 
   async getIntroSection(): Promise<IntroSection | undefined> {

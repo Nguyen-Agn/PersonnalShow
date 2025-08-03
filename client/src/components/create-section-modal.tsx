@@ -7,7 +7,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import type { InsertCustomSection } from "@shared/schema";
+import type { InsertCustomSection, CustomSection } from "@shared/schema";
+import { useEffect } from "react";
 
 const createSectionSchema = z.object({
   title: z.string().min(1, "Tiêu đề không được để trống"),
@@ -21,9 +22,10 @@ interface CreateSectionModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (data: InsertCustomSection) => void;
+  editingSection?: CustomSection;
 }
 
-export function CreateSectionModal({ isOpen, onClose, onSubmit }: CreateSectionModalProps) {
+export function CreateSectionModal({ isOpen, onClose, onSubmit, editingSection }: CreateSectionModalProps) {
   const {
     register,
     handleSubmit,
@@ -42,6 +44,20 @@ export function CreateSectionModal({ isOpen, onClose, onSubmit }: CreateSectionM
     }
   });
 
+  useEffect(() => {
+    if (editingSection) {
+      setValue("title", editingSection.title);
+      setValue("description", editingSection.description || "");
+      setValue("type", editingSection.type as "grid" | "list" | "cards");
+      setValue("order", editingSection.order);
+      setValue("backgroundColor", editingSection.backgroundColor || "bg-white");
+    } else {
+      reset();
+    }
+  }, [editingSection, setValue, reset]);
+
+  const selectedType = watch("type");
+
   const handleClose = () => {
     reset();
     onClose();
@@ -59,7 +75,9 @@ export function CreateSectionModal({ isOpen, onClose, onSubmit }: CreateSectionM
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Tạo Section Mới</DialogTitle>
+          <DialogTitle>
+            {editingSection ? "Chỉnh sửa Section" : "Tạo Section Mới"}
+          </DialogTitle>
         </DialogHeader>
         
         <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4">
@@ -83,15 +101,14 @@ export function CreateSectionModal({ isOpen, onClose, onSubmit }: CreateSectionM
               {...register("description")}
               placeholder="Mô tả ngắn về section này"
               className="focus:ring-2 focus:ring-coral focus:border-transparent"
-              rows={3}
             />
           </div>
 
           <div>
-            <Label htmlFor="type">Loại hiển thị</Label>
-            <Select onValueChange={(value) => setValue("type", value as "grid" | "list" | "cards")}>
-              <SelectTrigger>
-                <SelectValue placeholder="Chọn loại hiển thị" />
+            <Label htmlFor="type">Kiểu hiển thị</Label>
+            <Select value={selectedType} onValueChange={(value) => setValue("type", value as "grid" | "list" | "cards")}>
+              <SelectTrigger className="focus:ring-2 focus:ring-coral focus:border-transparent">
+                <SelectValue placeholder="Chọn kiểu hiển thị" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="grid">Lưới (Grid)</SelectItem>
@@ -109,7 +126,7 @@ export function CreateSectionModal({ isOpen, onClose, onSubmit }: CreateSectionM
             <Input
               id="order"
               {...register("order")}
-              placeholder="1"
+              placeholder="VD: 1"
               type="number"
               className="focus:ring-2 focus:ring-coral focus:border-transparent"
             />
@@ -118,35 +135,12 @@ export function CreateSectionModal({ isOpen, onClose, onSubmit }: CreateSectionM
             )}
           </div>
 
-          <div>
-            <Label htmlFor="backgroundColor">Màu nền</Label>
-            <Select onValueChange={(value) => setValue("backgroundColor", value)}>
-              <SelectTrigger>
-                <SelectValue placeholder="Chọn màu nền" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="bg-white">Trắng</SelectItem>
-                <SelectItem value="bg-gray-50">Xám nhạt</SelectItem>
-                <SelectItem value="bg-blue-50">Xanh dương nhạt</SelectItem>
-                <SelectItem value="bg-green-50">Xanh lá nhạt</SelectItem>
-                <SelectItem value="bg-purple-50">Tím nhạt</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="flex justify-end space-x-2 pt-4">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={handleClose}
-            >
+          <div className="flex justify-end gap-3 pt-4">
+            <Button type="button" variant="outline" onClick={handleClose}>
               Hủy
             </Button>
-            <Button
-              type="submit"
-              className="bg-coral text-white hover:bg-opacity-90"
-            >
-              Tạo Section
+            <Button type="submit" className="bg-coral text-white hover:bg-opacity-90">
+              {editingSection ? "Cập nhật" : "Tạo Section"}
             </Button>
           </div>
         </form>

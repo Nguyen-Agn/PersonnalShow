@@ -29,9 +29,10 @@ interface AddContentModalProps {
   isOpen: boolean;
   onClose: () => void;
   editingItem?: ContentItem;
+  selectedSectionId?: string;
 }
 
-export function AddContentModal({ isOpen, onClose, editingItem }: AddContentModalProps) {
+export function AddContentModal({ isOpen, onClose, editingItem, selectedSectionId = "default" }: AddContentModalProps) {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -51,10 +52,10 @@ export function AddContentModal({ isOpen, onClose, editingItem }: AddContentModa
       content: editingItem.content || "",
       mediaUrl: editingItem.mediaUrl || "",
       excerpt: editingItem.excerpt || "",
-      sectionId: editingItem.sectionId || "default",
+      sectionId: editingItem.sectionId || selectedSectionId,
     } : {
       type: "text",
-      sectionId: "default",
+      sectionId: selectedSectionId,
     }
   });
 

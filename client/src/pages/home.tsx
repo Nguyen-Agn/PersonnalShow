@@ -345,7 +345,7 @@ export function HomePage() {
                         rel="noopener noreferrer"
                         style={{animationDelay: '0.5s'}}
                       >
-                        <i className="fab fa-facebook-f text-lg"></i>
+                        <SiFacebook size={20} />
                       </a>
                     )}
                     {other?.socialLinks?.github && (
@@ -356,7 +356,7 @@ export function HomePage() {
                         rel="noopener noreferrer"
                         style={{animationDelay: '0.6s'}}
                       >
-                        <i className="fab fa-github text-lg"></i>
+                        <SiGithub size={20} />
                       </a>
                     )}
                     {other?.socialLinks?.zalo && (
@@ -367,7 +367,7 @@ export function HomePage() {
                         rel="noopener noreferrer"
                         style={{animationDelay: '0.7s'}}
                       >
-                        <span className="font-bold text-sm">Z</span>
+                        <MessageCircle size={20} />
                       </a>
                     )}
                   </div>

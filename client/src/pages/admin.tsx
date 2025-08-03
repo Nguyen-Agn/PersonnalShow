@@ -31,6 +31,8 @@ export function AdminPage() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<ContentItem | undefined>();
   const [isCreateSectionModalOpen, setIsCreateSectionModalOpen] = useState(false);
+  const [editingSection, setEditingSection] = useState<CustomSection | undefined>();
+  const [selectedSectionId, setSelectedSectionId] = useState<string>("default");
 
   const { data: intro } = useQuery<IntroSection>({
     queryKey: ["/api/intro"],
@@ -229,6 +231,7 @@ export function AdminPage() {
   const handleCloseModal = () => {
     setIsAddModalOpen(false);
     setEditingItem(undefined);
+    setSelectedSectionId("default");
   };
 
   const onSubmitIntro = (data: InsertIntroSection) => {
@@ -262,7 +265,60 @@ export function AdminPage() {
   });
 
   const handleCreateSection = (data: InsertCustomSection) => {
-    createSectionMutation.mutate(data);
+    if (editingSection) {
+      updateSectionMutation.mutate({ id: editingSection.id, data });
+    } else {
+      createSectionMutation.mutate(data);
+    }
+  };
+
+  const updateSectionMutation = useMutation({
+    mutationFn: async ({ id, data }: { id: string; data: Partial<InsertCustomSection> }) => {
+      const response = await apiRequest("PUT", `/api/sections/${id}`, data);
+      return response.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: "Thành công",
+        description: "Đã cập nhật section",
+      });
+      queryClient.invalidateQueries({ queryKey: ["/api/sections"] });
+      setIsCreateSectionModalOpen(false);
+      setEditingSection(undefined);
+    },
+    onError: (error) => {
+      toast({
+        title: "Lỗi",
+        description: "Không thể cập nhật section",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const deleteSectionMutation = useMutation({
+    mutationFn: async (id: string) => {
+      await apiRequest("DELETE", `/api/sections/${id}`);
+    },
+    onSuccess: () => {
+      toast({
+        title: "Thành công",
+        description: "Đã xóa section",
+      });
+      queryClient.invalidateQueries({ queryKey: ["/api/sections"] });
+    },
+    onError: (error) => {
+      toast({
+        title: "Lỗi",
+        description: "Không thể xóa section",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const handleDeleteSection = (id: string) => {
+    if (confirm("Bạn có chắc chắn muốn xóa section này?")) {
+      deleteSectionMutation.mutate(id);
+    }
   };
 
   const totalImages = contentItems.filter(item => item.type === "image").length;
@@ -516,7 +572,8 @@ export function AdminPage() {
                                 variant="outline"
                                 size="sm"
                                 onClick={() => {
-                                  // TODO: Edit section
+                                  setEditingSection(section);
+                                  setIsCreateSectionModalOpen(true);
                                 }}
                               >
                                 <Edit size={16} />
@@ -524,9 +581,7 @@ export function AdminPage() {
                               <Button
                                 variant="outline"
                                 size="sm"
-                                onClick={() => {
-                                  // TODO: Delete section
-                                }}
+                                onClick={() => handleDeleteSection(section.id)}
                                 className="text-red-600 hover:text-red-700"
                               >
                                 <Trash2 size={16} />
@@ -560,11 +615,12 @@ export function AdminPage() {
                               variant="outline"
                               size="sm"
                               onClick={() => {
-                                // TODO: Manage section items
+                                setSelectedSectionId(section.id);
+                                setIsAddModalOpen(true);
                               }}
                             >
-                              <Edit className="mr-2" size={14} />
-                              Quản lý Items
+                              <Plus className="mr-2" size={14} />
+                              Thêm Item
                             </Button>
                           </div>
                         </CardContent>
@@ -785,12 +841,17 @@ export function AdminPage() {
         isOpen={isAddModalOpen}
         onClose={handleCloseModal}
         editingItem={editingItem}
+        selectedSectionId={selectedSectionId}
       />
 
       <CreateSectionModal
         isOpen={isCreateSectionModalOpen}
-        onClose={() => setIsCreateSectionModalOpen(false)}
+        onClose={() => {
+          setIsCreateSectionModalOpen(false);
+          setEditingSection(undefined);
+        }}
         onSubmit={handleCreateSection}
+        editingSection={editingSection}
       />
     </div>
   );
