@@ -260,7 +260,7 @@ export function HomePage() {
                   >
                     <div className="absolute inset-0 bg-gradient-to-br from-coral/10 via-turquoise/10 to-sky/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     <div className="relative z-10">
-                      <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-coral to-turquoise rounded-2xl flex items-center justify-center group-hover:rotate-12 transition-transform duration-500">
+                      <div className="w-16 h-16 mx-auto mb-4 bg-coral rounded-2xl flex items-center justify-center group-hover:rotate-12 transition-transform duration-500">
                         {skill.icon === 'PaintbrushVertical' && <PaintbrushVertical className="text-white" size={28} />}
                         {skill.icon === 'Code' && <Code className="text-white" size={28} />}
                         {skill.icon === 'Smartphone' && <Smartphone className="text-white" size={28} />}
@@ -282,7 +282,7 @@ export function HomePage() {
                   <div className="group relative bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 text-center btn-hover-scale animate-fade-in-up transition-all duration-500 hover:bg-white/20" style={{animationDelay: '0.1s'}}>
                     <div className="absolute inset-0 bg-gradient-to-br from-coral/20 to-turquoise/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     <div className="relative z-10">
-                      <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-coral to-turquoise rounded-2xl flex items-center justify-center group-hover:rotate-12 transition-transform duration-500">
+                      <div className="w-16 h-16 mx-auto mb-4 bg-coral rounded-2xl flex items-center justify-center group-hover:rotate-12 transition-transform duration-500">
                         <PaintbrushVertical className="text-white" size={28} />
                       </div>
                       <h4 className="text-lg font-semibold text-white mb-2">UI/UX Design</h4>
@@ -292,7 +292,7 @@ export function HomePage() {
                   <div className="group relative bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 text-center btn-hover-scale animate-fade-in-up transition-all duration-500 hover:bg-white/20" style={{animationDelay: '0.2s'}}>
                     <div className="absolute inset-0 bg-gradient-to-br from-turquoise/20 to-sky/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     <div className="relative z-10">
-                      <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-turquoise to-sky rounded-2xl flex items-center justify-center group-hover:rotate-12 transition-transform duration-500">
+                      <div className="w-16 h-16 mx-auto mb-4 bg-turquoise rounded-2xl flex items-center justify-center group-hover:rotate-12 transition-transform duration-500">
                         <Code className="text-white" size={28} />
                       </div>
                       <h4 className="text-lg font-semibold text-white mb-2">Frontend</h4>
@@ -302,7 +302,7 @@ export function HomePage() {
                   <div className="group relative bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 text-center btn-hover-scale animate-fade-in-up transition-all duration-500 hover:bg-white/20" style={{animationDelay: '0.3s'}}>
                     <div className="absolute inset-0 bg-gradient-to-br from-sky/20 to-sunny/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     <div className="relative z-10">
-                      <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-sky to-sunny rounded-2xl flex items-center justify-center group-hover:rotate-12 transition-transform duration-500">
+                      <div className="w-16 h-16 mx-auto mb-4 bg-sky rounded-2xl flex items-center justify-center group-hover:rotate-12 transition-transform duration-500">
                         <Smartphone className="text-white" size={28} />
                       </div>
                       <h4 className="text-lg font-semibold text-white mb-2">Mobile Design</h4>
@@ -312,7 +312,7 @@ export function HomePage() {
                   <div className="group relative bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 text-center btn-hover-scale animate-fade-in-up transition-all duration-500 hover:bg-white/20" style={{animationDelay: '0.4s'}}>
                     <div className="absolute inset-0 bg-gradient-to-br from-sunny/20 to-coral/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     <div className="relative z-10">
-                      <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-sunny to-coral rounded-2xl flex items-center justify-center group-hover:rotate-12 transition-transform duration-500">
+                      <div className="w-16 h-16 mx-auto mb-4 bg-sunny rounded-2xl flex items-center justify-center group-hover:rotate-12 transition-transform duration-500">
                         <FileImage className="text-white" size={28} />
                       </div>
                       <h4 className="text-lg font-semibold text-white mb-2">Content</h4>
@@ -336,7 +336,7 @@ export function HomePage() {
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
               <div className="group bg-white/80 backdrop-blur-sm border border-gray-200 rounded-2xl p-6 text-center btn-hover-lift animate-fade-in-up transition-all duration-500 hover:bg-white shadow-lg" style={{animationDelay: '0.1s'}}>
-                <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-coral to-pink-500 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+                <div className="w-16 h-16 mx-auto mb-4 bg-coral rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
                   <Mail className="text-white" size={28} />
                 </div>
                 <h4 className="text-lg font-semibold text-slate mb-2">Email</h4>
@@ -346,7 +346,7 @@ export function HomePage() {
               </div>
 
               <div className="group bg-white/80 backdrop-blur-sm border border-gray-200 rounded-2xl p-6 text-center btn-hover-lift animate-fade-in-up transition-all duration-500 hover:bg-white shadow-lg" style={{animationDelay: '0.2s'}}>
-                <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-turquoise to-blue-500 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+                <div className="w-16 h-16 mx-auto mb-4 bg-turquoise rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
                   <Phone className="text-white" size={28} />
                 </div>
                 <h4 className="text-lg font-semibold text-slate mb-2">Điện thoại</h4>
@@ -356,7 +356,7 @@ export function HomePage() {
               </div>
 
               <div className="group bg-white/80 backdrop-blur-sm border border-gray-200 rounded-2xl p-6 text-center btn-hover-lift animate-fade-in-up transition-all duration-500 hover:bg-white shadow-lg" style={{animationDelay: '0.3s'}}>
-                <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-sky to-blue-600 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+                <div className="w-16 h-16 mx-auto mb-4 bg-sky rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
                   <MapPin className="text-white" size={28} />
                 </div>
                 <h4 className="text-lg font-semibold text-slate mb-2">Địa chỉ</h4>
@@ -373,7 +373,7 @@ export function HomePage() {
                 {other?.socialLinks?.facebook && (
                   <a 
                     href={other.socialLinks.facebook}
-                    className="group w-16 h-16 bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-2xl flex items-center justify-center btn-hover-scale animate-bounce-custom shadow-2xl border border-blue-500/50 hover:shadow-blue-500/25 transition-all duration-500"
+                    className="group w-16 h-16 bg-blue-600 text-white rounded-2xl flex items-center justify-center btn-hover-scale animate-bounce-custom shadow-2xl hover:bg-blue-700 transition-all duration-500"
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{animationDelay: '0.5s'}}
@@ -384,7 +384,7 @@ export function HomePage() {
                 {other?.socialLinks?.github && (
                   <a 
                     href={other.socialLinks.github}
-                    className="group w-16 h-16 bg-gradient-to-br from-gray-800 to-gray-900 text-white rounded-2xl flex items-center justify-center btn-hover-scale animate-bounce-custom shadow-2xl border border-gray-700/50 hover:shadow-gray-500/25 transition-all duration-500"
+                    className="group w-16 h-16 bg-gray-800 text-white rounded-2xl flex items-center justify-center btn-hover-scale animate-bounce-custom shadow-2xl hover:bg-gray-900 transition-all duration-500"
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{animationDelay: '0.6s'}}
@@ -395,7 +395,7 @@ export function HomePage() {
                 {other?.socialLinks?.zalo && (
                   <a 
                     href={other.socialLinks.zalo}
-                    className="group w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-2xl flex items-center justify-center btn-hover-scale animate-bounce-custom shadow-2xl border border-blue-400/50 hover:shadow-blue-400/25 transition-all duration-500"
+                    className="group w-16 h-16 bg-blue-500 text-white rounded-2xl flex items-center justify-center btn-hover-scale animate-bounce-custom shadow-2xl hover:bg-blue-600 transition-all duration-500"
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{animationDelay: '0.7s'}}
