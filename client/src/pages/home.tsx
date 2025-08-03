@@ -1,7 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { User, Download, Mail, Star, Code, PaintbrushVertical, Smartphone, FileImage, MapPin, Phone } from "lucide-react";
+import { User, Download, Mail, Star, Code, PaintbrushVertical, Smartphone, FileImage, MapPin, Phone, MessageCircle } from "lucide-react";
+import { FaFacebook, FaGithub } from "react-icons/fa";
 import { ContentCard, EmptyContentCard } from "@/components/content-card";
 import type { IntroSection, ContentItem, OtherSection, CustomSection } from "@shared/schema";
 
@@ -76,7 +77,7 @@ export function HomePage() {
         </div>
       </section>
 
-      {/* Content Section */}
+      {/* Content Section - Default Section */}
       <section id="content" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16 animate-fade-in-up">
@@ -89,8 +90,8 @@ export function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {contentItems.length > 0 ? (
-              contentItems.map((item, index) => (
+            {contentItems.filter(item => item.sectionId === "default" || !item.sectionId).length > 0 ? (
+              contentItems.filter(item => item.sectionId === "default" || !item.sectionId).map((item, index) => (
                 <div key={item.id} className="animate-fade-in-up" style={{animationDelay: `${index * 0.1}s`}}>
                   <ContentCard item={item} />
                 </div>
@@ -345,7 +346,7 @@ export function HomePage() {
                         rel="noopener noreferrer"
                         style={{animationDelay: '0.5s'}}
                       >
-                        <SiFacebook size={20} />
+                        <FaFacebook size={20} />
                       </a>
                     )}
                     {other?.socialLinks?.github && (
@@ -356,7 +357,7 @@ export function HomePage() {
                         rel="noopener noreferrer"
                         style={{animationDelay: '0.6s'}}
                       >
-                        <SiGithub size={20} />
+                        <FaGithub size={20} />
                       </a>
                     )}
                     {other?.socialLinks?.zalo && (

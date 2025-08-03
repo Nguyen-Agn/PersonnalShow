@@ -97,19 +97,7 @@ export class MemStorage implements IStorage {
     };
     this.customSections.set("default", defaultSection);
 
-    // Create "Nội dung của tôi" section
-    const myContentSection: CustomSection = {
-      id: "my-content",
-      title: "Nội dung của tôi",
-      description: "Các dự án và tác phẩm cá nhân",
-      type: "grid",
-      order: "1",
-      backgroundColor: "bg-white",
-      items: [],
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
-    this.customSections.set("my-content", myContentSection);
+    // Don't create "Nội dung của tôi" section - use default section for main content
   }
 
   async getIntroSection(): Promise<IntroSection | undefined> {
