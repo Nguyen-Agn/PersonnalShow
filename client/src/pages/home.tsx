@@ -209,130 +209,189 @@ export function HomePage() {
         );
       })}
 
-      {/* Other Section */}
-      <section id="other" className="py-20 bg-gradient-to-br from-slate-50 to-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Skills & Contact Section */}
+      <section id="other" className="py-20 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 relative overflow-hidden">
+        {/* Background Effects */}
+        <div className="absolute inset-0">
+          <div className="absolute top-20 left-10 w-72 h-72 bg-coral/10 rounded-full blur-3xl animate-pulse-custom"></div>
+          <div className="absolute bottom-20 right-10 w-96 h-96 bg-turquoise/10 rounded-full blur-3xl animate-bounce-custom"></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-sky/5 rounded-full blur-3xl"></div>
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center mb-16 animate-fade-in-up">
-            <h2 className="text-4xl font-poppins font-bold text-slate mb-4">
-              Khác
+            <h2 className="text-5xl font-poppins font-bold text-white mb-6">
+              Kỹ năng & Liên hệ
             </h2>
-            <p className="text-xl text-gray-600">
-              Thông tin bổ sung và liên hệ
+            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+              Khám phá những kỹ năng của tôi và cách thức liên hệ
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {/* Skills Section */}
-            <div className="animate-slide-in-left">
-              <Card className="bg-white rounded-2xl shadow-xl border border-gray-200 card-hover">
-                <CardContent className="p-8">
-                  <h3 className="text-2xl font-poppins font-bold text-gray-800 mb-6 flex items-center">
-                    <Code className="text-coral mr-3" size={24} />
-                    Kỹ năng
-                  </h3>
-                  <div className="grid grid-cols-2 gap-4">
-                    {other?.skills && other.skills.length > 0 ? (
-                      other.skills.map((skill, index) => (
-                        <div key={index} className={`text-white p-4 rounded-lg text-center btn-hover-scale animate-fade-in-up ${
-                          index === 0 ? 'bg-gradient-to-r from-coral to-turquoise' :
-                          index === 1 ? 'bg-gradient-to-r from-turquoise to-sky' :
-                          index === 2 ? 'bg-gradient-to-r from-sky to-sunny' :
-                          'bg-gradient-to-r from-sunny to-coral'
-                        }`} style={{animationDelay: `${index * 0.1}s`}}>
-                          {skill.icon === 'PaintbrushVertical' && <PaintbrushVertical className="mx-auto mb-2" size={24} />}
-                          {skill.icon === 'Code' && <Code className="mx-auto mb-2" size={24} />}
-                          {skill.icon === 'Smartphone' && <Smartphone className="mx-auto mb-2" size={24} />}
-                          {skill.icon === 'FileImage' && <FileImage className="mx-auto mb-2" size={24} />}
-                          <div className="font-medium">{skill.name}</div>
-                          {skill.description && (
-                            <div className="text-sm opacity-90 mt-1">{skill.description}</div>
-                          )}
-                        </div>
-                      ))
-                    ) : (
-                      <>
-                        <div className="bg-gradient-to-r from-coral to-turquoise text-white p-4 rounded-lg text-center btn-hover-scale animate-fade-in-up" style={{animationDelay: '0.1s'}}>
-                          <PaintbrushVertical className="mx-auto mb-2" size={24} />
-                          <div className="font-medium">UI/UX Design</div>
-                        </div>
-                        <div className="bg-gradient-to-r from-turquoise to-sky text-white p-4 rounded-lg text-center btn-hover-scale animate-fade-in-up" style={{animationDelay: '0.2s'}}>
-                          <Code className="mx-auto mb-2" size={24} />
-                          <div className="font-medium">Frontend</div>
-                        </div>
-                        <div className="bg-gradient-to-r from-sky to-sunny text-white p-4 rounded-lg text-center btn-hover-scale animate-fade-in-up" style={{animationDelay: '0.3s'}}>
-                          <Smartphone className="mx-auto mb-2" size={24} />
-                          <div className="font-medium">Mobile Design</div>
-                        </div>
-                        <div className="bg-gradient-to-r from-sunny to-coral text-white p-4 rounded-lg text-center btn-hover-scale animate-fade-in-up" style={{animationDelay: '0.4s'}}>
-                          <FileImage className="mx-auto mb-2" size={24} />
-                          <div className="font-medium">Content</div>
-                        </div>
-                      </>
-                    )}
+          {/* Skills Section */}
+          <div className="mb-20 animate-slide-in-left">
+            <div className="text-center mb-12">
+              <h3 className="text-3xl font-poppins font-bold text-white mb-4 flex items-center justify-center">
+                <Code className="text-coral mr-3 animate-pulse-custom" size={32} />
+                Kỹ năng chuyên môn
+              </h3>
+              <div className="w-24 h-1 bg-gradient-to-r from-coral to-turquoise mx-auto rounded-full"></div>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {other?.skills && other.skills.length > 0 ? (
+                other.skills.map((skill, index) => (
+                  <div 
+                    key={index} 
+                    className={`group relative bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 text-center btn-hover-scale animate-fade-in-up transition-all duration-500 hover:bg-white/20 hover:scale-105`}
+                    style={{animationDelay: `${index * 0.15}s`}}
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-br from-coral/20 via-turquoise/20 to-sky/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div className="relative z-10">
+                      <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-coral to-turquoise rounded-2xl flex items-center justify-center group-hover:rotate-12 transition-transform duration-500">
+                        {skill.icon === 'PaintbrushVertical' && <PaintbrushVertical className="text-white" size={28} />}
+                        {skill.icon === 'Code' && <Code className="text-white" size={28} />}
+                        {skill.icon === 'Smartphone' && <Smartphone className="text-white" size={28} />}
+                        {skill.icon === 'FileImage' && <FileImage className="text-white" size={28} />}
+                      </div>
+                      <h4 className="text-lg font-semibold text-white mb-2 group-hover:text-coral transition-colors duration-300">
+                        {skill.name}
+                      </h4>
+                      {skill.description && (
+                        <p className="text-sm text-gray-300 group-hover:text-white transition-colors duration-300">
+                          {skill.description}
+                        </p>
+                      )}
+                    </div>
                   </div>
-                </CardContent>
-              </Card>
+                ))
+              ) : (
+                <>
+                  <div className="group relative bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 text-center btn-hover-scale animate-fade-in-up transition-all duration-500 hover:bg-white/20" style={{animationDelay: '0.1s'}}>
+                    <div className="absolute inset-0 bg-gradient-to-br from-coral/20 to-turquoise/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div className="relative z-10">
+                      <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-coral to-turquoise rounded-2xl flex items-center justify-center group-hover:rotate-12 transition-transform duration-500">
+                        <PaintbrushVertical className="text-white" size={28} />
+                      </div>
+                      <h4 className="text-lg font-semibold text-white mb-2">UI/UX Design</h4>
+                      <p className="text-sm text-gray-300">Thiết kế giao diện</p>
+                    </div>
+                  </div>
+                  <div className="group relative bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 text-center btn-hover-scale animate-fade-in-up transition-all duration-500 hover:bg-white/20" style={{animationDelay: '0.2s'}}>
+                    <div className="absolute inset-0 bg-gradient-to-br from-turquoise/20 to-sky/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div className="relative z-10">
+                      <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-turquoise to-sky rounded-2xl flex items-center justify-center group-hover:rotate-12 transition-transform duration-500">
+                        <Code className="text-white" size={28} />
+                      </div>
+                      <h4 className="text-lg font-semibold text-white mb-2">Frontend</h4>
+                      <p className="text-sm text-gray-300">Phát triển web</p>
+                    </div>
+                  </div>
+                  <div className="group relative bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 text-center btn-hover-scale animate-fade-in-up transition-all duration-500 hover:bg-white/20" style={{animationDelay: '0.3s'}}>
+                    <div className="absolute inset-0 bg-gradient-to-br from-sky/20 to-sunny/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div className="relative z-10">
+                      <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-sky to-sunny rounded-2xl flex items-center justify-center group-hover:rotate-12 transition-transform duration-500">
+                        <Smartphone className="text-white" size={28} />
+                      </div>
+                      <h4 className="text-lg font-semibold text-white mb-2">Mobile Design</h4>
+                      <p className="text-sm text-gray-300">Ứng dụng di động</p>
+                    </div>
+                  </div>
+                  <div className="group relative bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 text-center btn-hover-scale animate-fade-in-up transition-all duration-500 hover:bg-white/20" style={{animationDelay: '0.4s'}}>
+                    <div className="absolute inset-0 bg-gradient-to-br from-sunny/20 to-coral/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div className="relative z-10">
+                      <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-sunny to-coral rounded-2xl flex items-center justify-center group-hover:rotate-12 transition-transform duration-500">
+                        <FileImage className="text-white" size={28} />
+                      </div>
+                      <h4 className="text-lg font-semibold text-white mb-2">Content</h4>
+                      <p className="text-sm text-gray-300">Sáng tạo nội dung</p>
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+
+          {/* Contact Section */}
+          <div className="animate-slide-in-right">
+            <div className="text-center mb-12">
+              <h3 className="text-3xl font-poppins font-bold text-white mb-4 flex items-center justify-center">
+                <Mail className="text-turquoise mr-3 animate-pulse-custom" size={32} />
+                Thông tin liên hệ
+              </h3>
+              <div className="w-24 h-1 bg-gradient-to-r from-turquoise to-sky mx-auto rounded-full"></div>
             </div>
 
-            {/* Contact Section */}
-            <div className="animate-slide-in-right">
-              <Card className="bg-white rounded-2xl shadow-xl border border-gray-200 card-hover">
-                <CardContent className="p-8">
-                  <h3 className="text-2xl font-poppins font-bold text-gray-800 mb-6 flex items-center">
-                    <Mail className="text-turquoise mr-3" size={24} />
-                    Liên hệ
-                  </h3>
-                  <div className="space-y-4">
-                    <div className="flex items-center space-x-4 p-4 bg-gray-100 rounded-lg btn-hover-lift animate-fade-in-up border border-gray-200" style={{animationDelay: '0.1s'}}>
-                      <Mail className="text-coral" size={20} />
-                      <span className="text-gray-700 font-medium">{other?.contactInfo?.email || "hello@portfolio.com"}</span>
-                    </div>
-                    <div className="flex items-center space-x-4 p-4 bg-gray-100 rounded-lg btn-hover-lift animate-fade-in-up border border-gray-200" style={{animationDelay: '0.2s'}}>
-                      <Phone className="text-turquoise" size={20} />
-                      <span className="text-gray-700 font-medium">{other?.contactInfo?.phone || "+84 123 456 789"}</span>
-                    </div>
-                    <div className="flex items-center space-x-4 p-4 bg-gray-100 rounded-lg btn-hover-lift animate-fade-in-up border border-gray-200" style={{animationDelay: '0.3s'}}>
-                      <MapPin className="text-sky" size={20} />
-                      <span className="text-gray-700 font-medium">{other?.contactInfo?.location || "Hà Nội, Việt Nam"}</span>
-                    </div>
-                  </div>
-                  <div className="flex space-x-4 mt-6">
-                    {other?.socialLinks?.facebook && (
-                      <a 
-                        href={other.socialLinks.facebook}
-                        className="w-14 h-14 bg-blue-600 text-white rounded-full flex items-center justify-center btn-hover-scale animate-bounce-custom shadow-lg border-2 border-blue-700"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style={{animationDelay: '0.5s'}}
-                      >
-                        <FaFacebook size={20} />
-                      </a>
-                    )}
-                    {other?.socialLinks?.github && (
-                      <a 
-                        href={other.socialLinks.github}
-                        className="w-14 h-14 bg-gray-800 text-white rounded-full flex items-center justify-center btn-hover-scale animate-bounce-custom shadow-lg border-2 border-gray-900"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style={{animationDelay: '0.6s'}}
-                      >
-                        <FaGithub size={20} />
-                      </a>
-                    )}
-                    {other?.socialLinks?.zalo && (
-                      <a 
-                        href={other.socialLinks.zalo}
-                        className="w-14 h-14 bg-blue-500 text-white rounded-full flex items-center justify-center btn-hover-scale animate-bounce-custom shadow-lg border-2 border-blue-600"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style={{animationDelay: '0.7s'}}
-                      >
-                        <MessageCircle size={20} />
-                      </a>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+              <div className="group bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 text-center btn-hover-lift animate-fade-in-up transition-all duration-500 hover:bg-white/20" style={{animationDelay: '0.1s'}}>
+                <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-coral to-pink-500 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+                  <Mail className="text-white" size={28} />
+                </div>
+                <h4 className="text-lg font-semibold text-white mb-2">Email</h4>
+                <p className="text-gray-300 group-hover:text-white transition-colors duration-300">
+                  {other?.contactInfo?.email || "hello@portfolio.com"}
+                </p>
+              </div>
+
+              <div className="group bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 text-center btn-hover-lift animate-fade-in-up transition-all duration-500 hover:bg-white/20" style={{animationDelay: '0.2s'}}>
+                <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-turquoise to-blue-500 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+                  <Phone className="text-white" size={28} />
+                </div>
+                <h4 className="text-lg font-semibold text-white mb-2">Điện thoại</h4>
+                <p className="text-gray-300 group-hover:text-white transition-colors duration-300">
+                  {other?.contactInfo?.phone || "+84 123 456 789"}
+                </p>
+              </div>
+
+              <div className="group bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 text-center btn-hover-lift animate-fade-in-up transition-all duration-500 hover:bg-white/20" style={{animationDelay: '0.3s'}}>
+                <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-sky to-blue-600 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+                  <MapPin className="text-white" size={28} />
+                </div>
+                <h4 className="text-lg font-semibold text-white mb-2">Địa chỉ</h4>
+                <p className="text-gray-300 group-hover:text-white transition-colors duration-300">
+                  {other?.contactInfo?.location || "Hà Nội, Việt Nam"}
+                </p>
+              </div>
+            </div>
+
+            {/* Social Media */}
+            <div className="text-center">
+              <h4 className="text-xl font-semibold text-white mb-6">Kết nối với tôi</h4>
+              <div className="flex justify-center space-x-6">
+                {other?.socialLinks?.facebook && (
+                  <a 
+                    href={other.socialLinks.facebook}
+                    className="group w-16 h-16 bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-2xl flex items-center justify-center btn-hover-scale animate-bounce-custom shadow-2xl border border-blue-500/50 hover:shadow-blue-500/25 transition-all duration-500"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{animationDelay: '0.5s'}}
+                  >
+                    <FaFacebook size={24} className="group-hover:scale-125 transition-transform duration-300" />
+                  </a>
+                )}
+                {other?.socialLinks?.github && (
+                  <a 
+                    href={other.socialLinks.github}
+                    className="group w-16 h-16 bg-gradient-to-br from-gray-800 to-gray-900 text-white rounded-2xl flex items-center justify-center btn-hover-scale animate-bounce-custom shadow-2xl border border-gray-700/50 hover:shadow-gray-500/25 transition-all duration-500"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{animationDelay: '0.6s'}}
+                  >
+                    <FaGithub size={24} className="group-hover:scale-125 transition-transform duration-300" />
+                  </a>
+                )}
+                {other?.socialLinks?.zalo && (
+                  <a 
+                    href={other.socialLinks.zalo}
+                    className="group w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-2xl flex items-center justify-center btn-hover-scale animate-bounce-custom shadow-2xl border border-blue-400/50 hover:shadow-blue-400/25 transition-all duration-500"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{animationDelay: '0.7s'}}
+                  >
+                    <MessageCircle size={24} className="group-hover:scale-125 transition-transform duration-300" />
+                  </a>
+                )}
+              </div>
             </div>
           </div>
         </div>
