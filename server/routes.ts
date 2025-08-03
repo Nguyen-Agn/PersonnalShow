@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertIntroSchema, insertContentSchema, insertOtherSchema } from "@shared/schema";
+import { insertIntroSchema, insertContentSchema, insertOtherSchema, insertCustomSectionSchema } from "@shared/schema";
 import { randomUUID } from "crypto";
 import { z } from "zod";
 
@@ -138,6 +138,86 @@ export async function registerRoutes(app: Express): Promise<Server> {
       } else {
         res.status(500).json({ message: "Internal server error" });
       }
+    }
+  });
+
+  // Custom sections routes
+  app.get("/api/sections", async (req, res) => {
+    try {
+      const sections = await storage.getAllCustomSections();
+      res.json(sections);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch custom sections" });
+    }
+  });
+
+  app.get("/api/sections/:id", async (req, res) => {
+    try {
+      const section = await storage.getCustomSection(req.params.id);
+      if (!section) {
+        return res.status(404).json({ message: "Section not found" });
+      }
+      res.json(section);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch section" });
+    }
+  });
+
+  app.post("/api/sections", async (req, res) => {
+    try {
+      const validatedData = insertCustomSectionSchema.parse(req.body);
+      const section = await storage.createCustomSection(validatedData);
+      res.json(section);
+    } catch (error) {
+      res.status(400).json({ message: "Invalid section data", error });
+    }
+  });
+
+  app.put("/api/sections/:id", async (req, res) => {
+    try {
+      const validatedData = insertCustomSectionSchema.partial().parse(req.body);
+      const section = await storage.updateCustomSection(req.params.id, validatedData);
+      res.json(section);
+    } catch (error) {
+      if (error instanceof Error && error.message === "Custom section not found") {
+        return res.status(404).json({ message: error.message });
+      }
+      res.status(400).json({ message: "Invalid section data", error });
+    }
+  });
+
+  app.delete("/api/sections/:id", async (req, res) => {
+    try {
+      const deleted = await storage.deleteCustomSection(req.params.id);
+      if (!deleted) {
+        return res.status(404).json({ message: "Section not found" });
+      }
+      res.json({ success: true });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to delete section" });
+    }
+  });
+
+  app.put("/api/sections/:id/items", async (req, res) => {
+    try {
+      const itemsSchema = z.array(z.object({
+        id: z.string(),
+        title: z.string(),
+        description: z.string().optional(),
+        content: z.string().optional(),
+        mediaUrl: z.string().optional(),
+        type: z.enum(['text', 'image', 'video', 'link']),
+        icon: z.string().optional(),
+        metadata: z.record(z.any()).optional(),
+      }));
+      const items = itemsSchema.parse(req.body);
+      const section = await storage.updateCustomSectionItems(req.params.id, items);
+      res.json(section);
+    } catch (error) {
+      if (error instanceof Error && error.message === "Custom section not found") {
+        return res.status(404).json({ message: error.message });
+      }
+      res.status(400).json({ message: "Invalid items data", error });
     }
   });
 

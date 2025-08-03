@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { User, Download, Mail, Star, Code, PaintbrushVertical, Smartphone, FileImage, MapPin, Phone } from "lucide-react";
 import { ContentCard, EmptyContentCard } from "@/components/content-card";
-import type { IntroSection, ContentItem, OtherSection } from "@shared/schema";
+import type { IntroSection, ContentItem, OtherSection, CustomSection } from "@shared/schema";
 
 export function HomePage() {
   const { data: intro } = useQuery<IntroSection>({
@@ -16,6 +16,10 @@ export function HomePage() {
 
   const { data: other } = useQuery<OtherSection>({
     queryKey: ["/api/other"],
+  });
+
+  const { data: customSections = [] } = useQuery<CustomSection[]>({
+    queryKey: ["/api/sections"],
   });
 
   return (
@@ -99,6 +103,127 @@ export function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Custom Sections */}
+      {customSections.map((section, index) => (
+        <section 
+          key={section.id} 
+          className={`py-20 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`}
+        >
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl font-poppins font-bold text-slate mb-4">
+                {section.title}
+              </h2>
+              {section.description && (
+                <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                  {section.description}
+                </p>
+              )}
+            </div>
+
+            {section.type === 'grid' && (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {section.items?.map((item) => (
+                  <Card key={item.id} className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300">
+                    <CardContent className="p-6">
+                      <div className="flex items-center mb-4">
+                        {item.type === 'text' && <FileImage className="text-coral mr-3" size={24} />}
+                        {item.type === 'image' && <FileImage className="text-turquoise mr-3" size={24} />}
+                        {item.type === 'video' && <FileImage className="text-sky mr-3" size={24} />}
+                        <h3 className="text-xl font-poppins font-semibold text-slate">{item.title}</h3>
+                      </div>
+                      {item.description && (
+                        <p className="text-gray-600 mb-4">{item.description}</p>
+                      )}
+                      {item.content && (
+                        <p className="text-gray-700">{item.content}</p>
+                      )}
+                      {item.mediaUrl && (
+                        <img src={item.mediaUrl} alt={item.title} className="w-full h-48 object-cover rounded-lg mt-4" />
+                      )}
+                    </CardContent>
+                  </Card>
+                )) || (
+                  <>
+                    <EmptyContentCard />
+                    <EmptyContentCard />
+                    <EmptyContentCard />
+                  </>
+                )}
+              </div>
+            )}
+
+            {section.type === 'list' && (
+              <div className="space-y-6">
+                {section.items?.map((item) => (
+                  <Card key={item.id} className="bg-white rounded-2xl shadow-lg">
+                    <CardContent className="p-6">
+                      <div className="flex items-start gap-4">
+                        {item.type === 'text' && <FileImage className="text-coral mt-1" size={24} />}
+                        {item.type === 'image' && <FileImage className="text-turquoise mt-1" size={24} />}
+                        {item.type === 'video' && <FileImage className="text-sky mt-1" size={24} />}
+                        <div className="flex-1">
+                          <h3 className="text-xl font-poppins font-semibold text-slate mb-2">{item.title}</h3>
+                          {item.description && (
+                            <p className="text-gray-600 mb-4">{item.description}</p>
+                          )}
+                          {item.content && (
+                            <p className="text-gray-700">{item.content}</p>
+                          )}
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                )) || (
+                  <div className="text-center py-12">
+                    <FileImage className="mx-auto text-gray-400 mb-4" size={48} />
+                    <h3 className="text-lg font-medium text-gray-500 mb-2">Chưa khả dụng</h3>
+                    <p className="text-gray-400">Nội dung sẽ được thêm vào sau</p>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {section.type === 'cards' && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {section.items?.map((item) => (
+                  <Card key={item.id} className="bg-white rounded-2xl shadow-lg">
+                    <CardContent className="p-8">
+                      <div className="text-center">
+                        {item.type === 'text' && <FileImage className="mx-auto text-coral mb-4" size={32} />}
+                        {item.type === 'image' && <FileImage className="mx-auto text-turquoise mb-4" size={32} />}
+                        {item.type === 'video' && <FileImage className="mx-auto text-sky mb-4" size={32} />}
+                        <h3 className="text-xl font-poppins font-semibold text-slate mb-4">{item.title}</h3>
+                        {item.description && (
+                          <p className="text-gray-600">{item.description}</p>
+                        )}
+                      </div>
+                    </CardContent>
+                  </Card>
+                )) || (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <Card className="bg-white rounded-2xl shadow-lg">
+                      <CardContent className="p-8 text-center">
+                        <FileImage className="mx-auto text-gray-400 mb-4" size={48} />
+                        <h3 className="text-lg font-medium text-gray-500 mb-2">Chưa khả dụng</h3>
+                        <p className="text-gray-400">Nội dung sẽ được thêm vào sau</p>
+                      </CardContent>
+                    </Card>
+                    <Card className="bg-white rounded-2xl shadow-lg">
+                      <CardContent className="p-8 text-center">
+                        <FileImage className="mx-auto text-gray-400 mb-4" size={48} />
+                        <h3 className="text-lg font-medium text-gray-500 mb-2">Chưa khả dụng</h3>
+                        <p className="text-gray-400">Nội dung sẽ được thêm vào sau</p>
+                      </CardContent>
+                    </Card>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        </section>
+      ))}
 
       {/* Other Section */}
       <section id="other" className="py-20 bg-gray-50">

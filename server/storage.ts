@@ -4,7 +4,9 @@ import {
   type ContentItem,
   type InsertContentItem,
   type OtherSection,
-  type InsertOtherSection
+  type InsertOtherSection,
+  type CustomSection,
+  type InsertCustomSection
 } from "@shared/schema";
 import { randomUUID } from "crypto";
 
@@ -24,15 +26,25 @@ export interface IStorage {
   getOtherSection(): Promise<OtherSection | undefined>;
   createOrUpdateOtherSection(other: InsertOtherSection): Promise<OtherSection>;
   updateSkills(skills: Array<{ name: string; description: string; icon: string }>): Promise<OtherSection>;
+
+  // Custom sections
+  getAllCustomSections(): Promise<CustomSection[]>;
+  getCustomSection(id: string): Promise<CustomSection | undefined>;
+  createCustomSection(section: InsertCustomSection): Promise<CustomSection>;
+  updateCustomSection(id: string, section: Partial<InsertCustomSection>): Promise<CustomSection>;
+  deleteCustomSection(id: string): Promise<boolean>;
+  updateCustomSectionItems(id: string, items: CustomSection['items']): Promise<CustomSection>;
 }
 
 export class MemStorage implements IStorage {
   private introSection: IntroSection | undefined;
   private contentItems: Map<string, ContentItem>;
   private otherSection: OtherSection | undefined;
+  private customSections: Map<string, CustomSection>;
 
   constructor() {
     this.contentItems = new Map();
+    this.customSections = new Map();
     
     // Initialize with default data
     this.initializeDefaultData();
@@ -190,6 +202,72 @@ export class MemStorage implements IStorage {
       };
     }
     return this.otherSection;
+  }
+
+  // Custom sections methods
+  async getAllCustomSections(): Promise<CustomSection[]> {
+    return Array.from(this.customSections.values()).sort((a, b) => 
+      parseInt(a.order) - parseInt(b.order)
+    );
+  }
+
+  async getCustomSection(id: string): Promise<CustomSection | undefined> {
+    return this.customSections.get(id);
+  }
+
+  async createCustomSection(section: InsertCustomSection): Promise<CustomSection> {
+    const newSection: CustomSection = {
+      id: randomUUID(),
+      title: section.title,
+      description: section.description || null,
+      type: section.type,
+      order: section.order,
+      backgroundColor: section.backgroundColor || null,
+      items: (section.items || []) as CustomSection['items'],
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    this.customSections.set(newSection.id, newSection);
+    return newSection;
+  }
+
+  async updateCustomSection(id: string, section: Partial<InsertCustomSection>): Promise<CustomSection> {
+    const existingSection = this.customSections.get(id);
+    if (!existingSection) {
+      throw new Error("Custom section not found");
+    }
+    
+    const updatedSection: CustomSection = {
+      ...existingSection,
+      title: section.title !== undefined ? section.title : existingSection.title,
+      description: section.description !== undefined ? section.description || null : existingSection.description,
+      type: section.type !== undefined ? section.type : existingSection.type,
+      order: section.order !== undefined ? section.order : existingSection.order,
+      backgroundColor: section.backgroundColor !== undefined ? section.backgroundColor || null : existingSection.backgroundColor,
+      items: section.items !== undefined ? (section.items || [] as CustomSection['items']) : existingSection.items,
+      updatedAt: new Date(),
+    };
+    this.customSections.set(id, updatedSection);
+    return updatedSection;
+  }
+
+  async deleteCustomSection(id: string): Promise<boolean> {
+    return this.customSections.delete(id);
+  }
+
+  async updateCustomSectionItems(id: string, items: CustomSection['items']): Promise<CustomSection> {
+    const existingSection = this.customSections.get(id);
+    if (!existingSection) {
+      throw new Error("Custom section not found");
+    }
+    
+    const updatedSection: CustomSection = {
+      ...existingSection,
+      items,
+      updatedAt: new Date(),
+    };
+    this.customSections.set(id, updatedSection);
+    return updatedSection;
   }
 }
 

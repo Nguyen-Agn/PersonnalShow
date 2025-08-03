@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Plus, FileText, Image, Video, Clock, Upload, Save, Trash2 } from "lucide-react";
+import { Plus, FileText, Image, Video, Clock, Upload, Save, Trash2, Layers, Edit, MoreVertical } from "lucide-react";
 import { ContentCard } from "@/components/content-card";
 import { AddContentModal } from "@/components/add-content-modal";
 import { apiRequest } from "@/lib/queryClient";
@@ -14,7 +14,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import type { IntroSection, ContentItem, OtherSection, InsertIntroSection, InsertOtherSection } from "@shared/schema";
+import type { IntroSection, ContentItem, OtherSection, InsertIntroSection, InsertOtherSection, CustomSection, InsertCustomSection } from "@shared/schema";
 
 const skillsSchema = z.object({
   skills: z.array(z.object({
@@ -40,6 +40,10 @@ export function AdminPage() {
 
   const { data: other } = useQuery<OtherSection>({
     queryKey: ["/api/other"],
+  });
+
+  const { data: customSections = [] } = useQuery<CustomSection[]>({
+    queryKey: ["/api/sections"],
   });
 
   // Introduction form
@@ -308,6 +312,10 @@ export function AdminPage() {
             <TabsTrigger value="content" className="px-6 py-3 data-[state=active]:bg-coral data-[state=active]:text-white">
               Nội dung
             </TabsTrigger>
+            <TabsTrigger value="sections" className="px-6 py-3 data-[state=active]:bg-coral data-[state=active]:text-white">
+              <Layers className="mr-2" size={16} />
+              Sections
+            </TabsTrigger>
             <TabsTrigger value="skills" className="px-6 py-3 data-[state=active]:bg-coral data-[state=active]:text-white">
               Kỹ năng
             </TabsTrigger>
@@ -430,6 +438,117 @@ export function AdminPage() {
                       <FileText className="mx-auto text-gray-400 mb-4" size={48} />
                       <h3 className="text-lg font-medium text-gray-500 mb-2">Chưa có nội dung</h3>
                       <p className="text-gray-400">Thêm nội dung đầu tiên của bạn</p>
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Sections Tab */}
+          <TabsContent value="sections">
+            <Card>
+              <CardContent className="p-6">
+                <div className="mb-6 flex justify-between items-center">
+                  <h3 className="text-lg font-semibold text-slate">Quản lý Sections</h3>
+                  <Button
+                    onClick={() => {
+                      // TODO: Add create section modal
+                    }}
+                    className="bg-turquoise text-white hover:bg-sky transition-colors duration-300"
+                  >
+                    <Plus className="mr-2" size={16} />
+                    Tạo Section
+                  </Button>
+                </div>
+
+                <div className="space-y-4">
+                  {customSections.length > 0 ? (
+                    customSections.map((section) => (
+                      <Card key={section.id} className="border border-gray-200">
+                        <CardContent className="p-4">
+                          <div className="flex justify-between items-start mb-4">
+                            <div>
+                              <h4 className="text-lg font-semibold text-slate">{section.title}</h4>
+                              {section.description && (
+                                <p className="text-gray-600 text-sm mt-1">{section.description}</p>
+                              )}
+                              <div className="flex items-center gap-4 mt-2">
+                                <span className="px-2 py-1 bg-gray-100 rounded text-xs">
+                                  Thứ tự: {section.order}
+                                </span>
+                                <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs">
+                                  {section.type}
+                                </span>
+                                <span className="px-2 py-1 bg-green-100 text-green-800 rounded text-xs">
+                                  {section.items?.length || 0} items
+                                </span>
+                              </div>
+                            </div>
+                            <div className="flex gap-2">
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => {
+                                  // TODO: Edit section
+                                }}
+                              >
+                                <Edit size={16} />
+                              </Button>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => {
+                                  // TODO: Delete section
+                                }}
+                                className="text-red-600 hover:text-red-700"
+                              >
+                                <Trash2 size={16} />
+                              </Button>
+                            </div>
+                          </div>
+                          
+                          {section.items && section.items.length > 0 && (
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mt-4">
+                              {section.items.map((item, index) => (
+                                <div
+                                  key={item.id}
+                                  className="p-3 border rounded-lg bg-gray-50"
+                                >
+                                  <div className="flex items-center gap-2 mb-2">
+                                    {item.type === 'text' && <FileText size={14} />}
+                                    {item.type === 'image' && <Image size={14} />}
+                                    {item.type === 'video' && <Video size={14} />}
+                                    <h5 className="font-medium text-sm">{item.title}</h5>
+                                  </div>
+                                  {item.description && (
+                                    <p className="text-xs text-gray-600">{item.description}</p>
+                                  )}
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                          
+                          <div className="flex justify-end mt-4">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => {
+                                // TODO: Manage section items
+                              }}
+                            >
+                              <Edit className="mr-2" size={14} />
+                              Quản lý Items
+                            </Button>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))
+                  ) : (
+                    <div className="text-center py-12">
+                      <Layers className="mx-auto text-gray-400 mb-4" size={48} />
+                      <h3 className="text-lg font-medium text-gray-500 mb-2">Chưa có section nào</h3>
+                      <p className="text-gray-400">Tạo section đầu tiên để hiển thị nội dung theo chủ đề</p>
                     </div>
                   )}
                 </div>

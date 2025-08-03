@@ -43,6 +43,27 @@ export const otherSection = pgTable("other_section", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
+export const customSections = pgTable("custom_sections", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  title: text("title").notNull(),
+  description: text("description"),
+  type: text("type").notNull(), // 'grid', 'list', 'cards'
+  order: text("order").notNull(), // display order
+  backgroundColor: text("background_color").default("bg-white"),
+  items: jsonb("items").$type<Array<{
+    id: string;
+    title: string;
+    description?: string;
+    content?: string;
+    mediaUrl?: string;
+    type: 'text' | 'image' | 'video' | 'link';
+    icon?: string;
+    metadata?: Record<string, any>;
+  }>>().default([]),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
 export const insertIntroSchema = createInsertSchema(introSection).omit({
   id: true,
   updatedAt: true,
@@ -59,9 +80,17 @@ export const insertOtherSchema = createInsertSchema(otherSection).omit({
   updatedAt: true,
 });
 
+export const insertCustomSectionSchema = createInsertSchema(customSections).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
 export type IntroSection = typeof introSection.$inferSelect;
 export type InsertIntroSection = z.infer<typeof insertIntroSchema>;
 export type ContentItem = typeof contentItems.$inferSelect;
 export type InsertContentItem = z.infer<typeof insertContentSchema>;
 export type OtherSection = typeof otherSection.$inferSelect;
 export type InsertOtherSection = z.infer<typeof insertOtherSchema>;
+export type CustomSection = typeof customSections.$inferSelect;
+export type InsertCustomSection = z.infer<typeof insertCustomSectionSchema>;
