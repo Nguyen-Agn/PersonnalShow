@@ -244,7 +244,7 @@ export class MemStorage implements IStorage {
       type: section.type !== undefined ? section.type : existingSection.type,
       order: section.order !== undefined ? section.order : existingSection.order,
       backgroundColor: section.backgroundColor !== undefined ? section.backgroundColor || null : existingSection.backgroundColor,
-      items: section.items !== undefined ? (section.items || [] as CustomSection['items']) : existingSection.items,
+      items: section.items !== undefined ? ((section.items || []) as CustomSection['items']) : existingSection.items,
       updatedAt: new Date(),
     };
     this.customSections.set(id, updatedSection);

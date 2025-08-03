@@ -148,8 +148,8 @@ export function ContentCard({ item, isAdmin = false, onEdit, onDelete }: Content
 
 export function EmptyContentCard() {
   return (
-    <div className="bg-gray-50 border-2 border-dashed border-gray-300 rounded-2xl p-8 text-center min-h-[300px] flex flex-col items-center justify-center">
-      <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mb-4">
+    <div className="bg-gray-50 border-2 border-dashed border-gray-300 rounded-2xl p-8 text-center min-h-[300px] flex flex-col items-center justify-center card-hover">
+      <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mb-4 animate-pulse-custom">
         <FileText className="text-gray-400" size={24} />
       </div>
       <h3 className="text-lg font-medium text-gray-500 mb-2">Chưa khả dụng</h3>
