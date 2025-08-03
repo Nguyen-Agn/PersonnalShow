@@ -323,7 +323,7 @@ export function AddContentModal({ isOpen, onClose, editingItem, selectedSectionI
             </Button>
             <Button
               type="submit"
-              className="bg-coral text-white hover:bg-opacity-90 transition-all duration-300"
+              className="bg-coral text-white hover:bg-turquoise transition-all duration-300 border-0"
               disabled={createMutation.isPending || updateMutation.isPending}
             >
               <Save className="mr-2" size={16} />

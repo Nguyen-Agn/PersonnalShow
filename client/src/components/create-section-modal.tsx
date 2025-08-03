@@ -139,7 +139,7 @@ export function CreateSectionModal({ isOpen, onClose, onSubmit, editingSection }
             <Button type="button" variant="outline" onClick={handleClose}>
               Hủy
             </Button>
-            <Button type="submit" className="bg-coral text-white hover:bg-opacity-90">
+            <Button type="submit" className="bg-coral text-white hover:bg-turquoise border-0">
               {editingSection ? "Cập nhật" : "Tạo Section"}
             </Button>
           </div>

@@ -41,11 +41,11 @@ export function HomePage() {
                 {intro?.description || "Tôi tạo ra những trải nghiệm số đẹp và có ý nghĩa thông qua thiết kế sáng tạo và công nghệ hiện đại."}
               </p>
               <div className="flex flex-wrap gap-4 animate-fade-in-up" style={{animationDelay: '0.9s'}}>
-                <Button className="bg-coral text-white hover:bg-opacity-90 btn-hover-lift shadow-lg hover:shadow-xl">
+                <Button className="bg-coral text-white hover:bg-turquoise btn-hover-lift shadow-lg hover:shadow-xl border-0">
                   <Download className="mr-2" size={16} />
                   Tải CV
                 </Button>
-                <Button variant="outline" className="border-2 border-turquoise text-turquoise hover:bg-turquoise hover:text-white btn-hover-lift">
+                <Button variant="outline" className="border-2 border-turquoise text-turquoise hover:bg-turquoise hover:text-white btn-hover-lift border-0">
                   <Mail className="mr-2" size={16} />
                   Liên hệ
                 </Button>

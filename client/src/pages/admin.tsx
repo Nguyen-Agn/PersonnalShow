@@ -506,7 +506,7 @@ export function AdminPage() {
                   <div className="flex justify-end mt-8">
                     <Button
                       type="submit"
-                      className="bg-coral text-white hover:bg-opacity-90 transition-all duration-300"
+                      className="bg-coral text-white hover:bg-turquoise transition-all duration-300 border-0"
                       disabled={saveIntroMutation.isPending}
                     >
                       <Save className="mr-2" size={16} />
@@ -528,7 +528,7 @@ export function AdminPage() {
                   <h3 className="text-lg font-semibold text-slate">Quản lý Sections</h3>
                   <Button
                     onClick={() => setIsCreateSectionModalOpen(true)}
-                    className="bg-turquoise text-white hover:bg-sky transition-colors duration-300"
+                    className="bg-turquoise text-white hover:bg-sky transition-colors duration-300 border-0"
                   >
                     <Plus className="mr-2" size={16} />
                     Tạo Section
@@ -670,7 +670,7 @@ export function AdminPage() {
                   <Button
                     type="button"
                     onClick={() => appendSkill({ name: "", description: "", icon: "Code" })}
-                    className="bg-turquoise text-white hover:bg-sky transition-colors duration-300"
+                    className="bg-turquoise text-white hover:bg-sky transition-colors duration-300 border-0"
                   >
                     <Plus className="mr-2" size={16} />
                     Thêm kỹ năng
@@ -752,7 +752,7 @@ export function AdminPage() {
                   <div className="flex justify-end mt-8">
                     <Button
                       type="submit"
-                      className="bg-coral text-white hover:bg-opacity-90 transition-all duration-300"
+                      className="bg-coral text-white hover:bg-turquoise transition-all duration-300 border-0"
                       disabled={saveSkillsMutation.isPending}
                     >
                       <Save className="mr-2" size={16} />
@@ -846,7 +846,7 @@ export function AdminPage() {
                   <div className="flex justify-end mt-8">
                     <Button
                       type="submit"
-                      className="bg-coral text-white hover:bg-opacity-90 transition-all duration-300"
+                      className="bg-coral text-white hover:bg-turquoise transition-all duration-300 border-0"
                       disabled={saveOtherMutation.isPending}
                     >
                       <Save className="mr-2" size={16} />
