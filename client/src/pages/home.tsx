@@ -121,22 +121,44 @@ export function HomePage() {
                   Kỹ năng
                 </h3>
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-gradient-to-r from-coral to-turquoise text-white p-4 rounded-lg text-center">
-                    <PaintbrushVertical className="mx-auto mb-2" size={24} />
-                    <div className="font-medium">UI/UX Design</div>
-                  </div>
-                  <div className="bg-gradient-to-r from-turquoise to-sky text-white p-4 rounded-lg text-center">
-                    <Code className="mx-auto mb-2" size={24} />
-                    <div className="font-medium">Frontend</div>
-                  </div>
-                  <div className="bg-gradient-to-r from-sky to-sunny text-white p-4 rounded-lg text-center">
-                    <Smartphone className="mx-auto mb-2" size={24} />
-                    <div className="font-medium">Mobile Design</div>
-                  </div>
-                  <div className="bg-gradient-to-r from-sunny to-coral text-white p-4 rounded-lg text-center">
-                    <FileImage className="mx-auto mb-2" size={24} />
-                    <div className="font-medium">Content</div>
-                  </div>
+                  {other?.skills && other.skills.length > 0 ? (
+                    other.skills.map((skill, index) => (
+                      <div key={index} className={`text-white p-4 rounded-lg text-center ${
+                        index === 0 ? 'bg-gradient-to-r from-coral to-turquoise' :
+                        index === 1 ? 'bg-gradient-to-r from-turquoise to-sky' :
+                        index === 2 ? 'bg-gradient-to-r from-sky to-sunny' :
+                        'bg-gradient-to-r from-sunny to-coral'
+                      }`}>
+                        {skill.icon === 'PaintbrushVertical' && <PaintbrushVertical className="mx-auto mb-2" size={24} />}
+                        {skill.icon === 'Code' && <Code className="mx-auto mb-2" size={24} />}
+                        {skill.icon === 'Smartphone' && <Smartphone className="mx-auto mb-2" size={24} />}
+                        {skill.icon === 'FileImage' && <FileImage className="mx-auto mb-2" size={24} />}
+                        <div className="font-medium">{skill.name}</div>
+                        {skill.description && (
+                          <div className="text-sm opacity-90 mt-1">{skill.description}</div>
+                        )}
+                      </div>
+                    ))
+                  ) : (
+                    <>
+                      <div className="bg-gradient-to-r from-coral to-turquoise text-white p-4 rounded-lg text-center">
+                        <PaintbrushVertical className="mx-auto mb-2" size={24} />
+                        <div className="font-medium">UI/UX Design</div>
+                      </div>
+                      <div className="bg-gradient-to-r from-turquoise to-sky text-white p-4 rounded-lg text-center">
+                        <Code className="mx-auto mb-2" size={24} />
+                        <div className="font-medium">Frontend</div>
+                      </div>
+                      <div className="bg-gradient-to-r from-sky to-sunny text-white p-4 rounded-lg text-center">
+                        <Smartphone className="mx-auto mb-2" size={24} />
+                        <div className="font-medium">Mobile Design</div>
+                      </div>
+                      <div className="bg-gradient-to-r from-sunny to-coral text-white p-4 rounded-lg text-center">
+                        <FileImage className="mx-auto mb-2" size={24} />
+                        <div className="font-medium">Content</div>
+                      </div>
+                    </>
+                  )}
                 </div>
               </CardContent>
             </Card>

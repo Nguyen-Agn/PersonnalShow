@@ -23,6 +23,7 @@ export interface IStorage {
   // Other section
   getOtherSection(): Promise<OtherSection | undefined>;
   createOrUpdateOtherSection(other: InsertOtherSection): Promise<OtherSection>;
+  updateSkills(skills: Array<{ name: string; description: string; icon: string }>): Promise<OtherSection>;
 }
 
 export class MemStorage implements IStorage {
@@ -61,6 +62,12 @@ export class MemStorage implements IStorage {
         github: "",
         dribbble: "",
       },
+      skills: [
+        { name: "UI/UX Design", description: "Thiết kế giao diện người dùng sáng tạo", icon: "PaintbrushVertical" },
+        { name: "Frontend", description: "Phát triển giao diện web hiện đại", icon: "Code" },
+        { name: "Mobile Design", description: "Thiết kế ứng dụng di động", icon: "Smartphone" },
+        { name: "Content", description: "Tạo nội dung sáng tạo và hấp dẫn", icon: "FileImage" }
+      ],
       updatedAt: new Date(),
     };
   }
@@ -143,10 +150,11 @@ export class MemStorage implements IStorage {
         ...this.otherSection,
         contactInfo: other.contactInfo || null,
         socialLinks: other.socialLinks ? {
-          linkedin: other.socialLinks.linkedin || undefined,
-          github: other.socialLinks.github || undefined,
-          dribbble: other.socialLinks.dribbble || undefined,
+          linkedin: (other.socialLinks.linkedin as string) || "",
+          github: (other.socialLinks.github as string) || "",
+          dribbble: (other.socialLinks.dribbble as string) || "",
         } : null,
+        skills: other.skills ? [...other.skills] : null,
         updatedAt: new Date(),
       };
     } else {
@@ -154,10 +162,30 @@ export class MemStorage implements IStorage {
         id: randomUUID(),
         contactInfo: other.contactInfo || null,
         socialLinks: other.socialLinks ? {
-          linkedin: other.socialLinks.linkedin || undefined,
-          github: other.socialLinks.github || undefined,
-          dribbble: other.socialLinks.dribbble || undefined,
+          linkedin: (other.socialLinks.linkedin as string) || "",
+          github: (other.socialLinks.github as string) || "",
+          dribbble: (other.socialLinks.dribbble as string) || "",
         } : null,
+        skills: other.skills ? [...other.skills] : null,
+        updatedAt: new Date(),
+      };
+    }
+    return this.otherSection!;
+  }
+
+  async updateSkills(skills: Array<{ name: string; description: string; icon: string }>): Promise<OtherSection> {
+    if (!this.otherSection) {
+      this.otherSection = {
+        id: randomUUID(),
+        contactInfo: null,
+        socialLinks: null,
+        skills,
+        updatedAt: new Date(),
+      };
+    } else {
+      this.otherSection = {
+        ...this.otherSection,
+        skills,
         updatedAt: new Date(),
       };
     }

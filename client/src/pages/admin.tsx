@@ -6,13 +6,23 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Plus, FileText, Image, Video, Clock, Upload, Save } from "lucide-react";
+import { Plus, FileText, Image, Video, Clock, Upload, Save, Trash2 } from "lucide-react";
 import { ContentCard } from "@/components/content-card";
 import { AddContentModal } from "@/components/add-content-modal";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
-import { useForm } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import type { IntroSection, ContentItem, OtherSection, InsertIntroSection, InsertOtherSection } from "@shared/schema";
+
+const skillsSchema = z.object({
+  skills: z.array(z.object({
+    name: z.string().min(1, "Tên kỹ năng không được để trống"),
+    description: z.string().min(1, "Mô tả không được để trống"),
+    icon: z.string().min(1, "Icon không được để trống")
+  }))
+});
 
 export function AdminPage() {
   const { toast } = useToast();
@@ -123,6 +133,57 @@ export function AdminPage() {
       toast({
         title: "Lỗi",
         description: "Không thể lưu thông tin",
+        variant: "destructive",
+      });
+    }
+  });
+
+  // Skills form
+  const {
+    control: skillsControl,
+    handleSubmit: handleSubmitSkills,
+    formState: { errors: skillsErrors }
+  } = useForm({
+    resolver: zodResolver(skillsSchema),
+    defaultValues: {
+      skills: other?.skills || [
+        { name: "UI/UX Design", description: "Thiết kế giao diện người dùng sáng tạo", icon: "PaintbrushVertical" },
+        { name: "Frontend", description: "Phát triển giao diện web hiện đại", icon: "Code" },
+        { name: "Mobile Design", description: "Thiết kế ứng dụng di động", icon: "Smartphone" },
+        { name: "Content", description: "Tạo nội dung sáng tạo và hấp dẫn", icon: "FileImage" }
+      ]
+    },
+    values: {
+      skills: other?.skills || [
+        { name: "UI/UX Design", description: "Thiết kế giao diện người dùng sáng tạo", icon: "PaintbrushVertical" },
+        { name: "Frontend", description: "Phát triển giao diện web hiện đại", icon: "Code" },
+        { name: "Mobile Design", description: "Thiết kế ứng dụng di động", icon: "Smartphone" },
+        { name: "Content", description: "Tạo nội dung sáng tạo và hấp dẫn", icon: "FileImage" }
+      ]
+    }
+  });
+
+  const { fields: skillFields, append: appendSkill, remove: removeSkill } = useFieldArray({
+    control: skillsControl,
+    name: "skills"
+  });
+
+  const saveSkillsMutation = useMutation({
+    mutationFn: async (data: { skills: Array<{ name: string; description: string; icon: string }> }) => {
+      const response = await apiRequest("PUT", "/api/skills", data.skills);
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/other"] });
+      toast({
+        title: "Thành công",
+        description: "Kỹ năng đã được cập nhật",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Lỗi",
+        description: "Không thể lưu kỹ năng",
         variant: "destructive",
       });
     }
@@ -247,6 +308,9 @@ export function AdminPage() {
             <TabsTrigger value="content" className="px-6 py-3 data-[state=active]:bg-coral data-[state=active]:text-white">
               Nội dung
             </TabsTrigger>
+            <TabsTrigger value="skills" className="px-6 py-3 data-[state=active]:bg-coral data-[state=active]:text-white">
+              Kỹ năng
+            </TabsTrigger>
             <TabsTrigger value="other" className="px-6 py-3 data-[state=active]:bg-coral data-[state=active]:text-white">
               Khác
             </TabsTrigger>
@@ -369,6 +433,109 @@ export function AdminPage() {
                     </div>
                   )}
                 </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Skills Tab */}
+          <TabsContent value="skills">
+            <Card>
+              <CardContent className="p-6">
+                <div className="mb-6 flex justify-between items-center">
+                  <h3 className="text-lg font-semibold text-slate">Quản lý kỹ năng</h3>
+                  <Button
+                    type="button"
+                    onClick={() => appendSkill({ name: "", description: "", icon: "Code" })}
+                    className="bg-turquoise text-white hover:bg-sky transition-colors duration-300"
+                  >
+                    <Plus className="mr-2" size={16} />
+                    Thêm kỹ năng
+                  </Button>
+                </div>
+
+                <form onSubmit={handleSubmitSkills((data) => saveSkillsMutation.mutate(data))}>
+                  <div className="space-y-6">
+                    {skillFields.map((field, index) => (
+                      <Card key={field.id} className="border border-gray-200">
+                        <CardContent className="p-4">
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+                            <div>
+                              <Label htmlFor={`skills.${index}.name`}>Tên kỹ năng</Label>
+                              <Input
+                                {...skillsControl.register(`skills.${index}.name`)}
+                                placeholder="VD: UI/UX Design"
+                                className="focus:ring-2 focus:ring-coral focus:border-transparent"
+                              />
+                              {skillsErrors.skills?.[index]?.name && (
+                                <p className="text-red-500 text-sm mt-1">
+                                  {skillsErrors.skills[index].name?.message}
+                                </p>
+                              )}
+                            </div>
+                            
+                            <div>
+                              <Label htmlFor={`skills.${index}.description`}>Mô tả</Label>
+                              <Input
+                                {...skillsControl.register(`skills.${index}.description`)}
+                                placeholder="Mô tả ngắn về kỹ năng"
+                                className="focus:ring-2 focus:ring-coral focus:border-transparent"
+                              />
+                              {skillsErrors.skills?.[index]?.description && (
+                                <p className="text-red-500 text-sm mt-1">
+                                  {skillsErrors.skills[index].description?.message}
+                                </p>
+                              )}
+                            </div>
+                            
+                            <div className="flex gap-2">
+                              <div className="flex-1">
+                                <Label htmlFor={`skills.${index}.icon`}>Icon</Label>
+                                <Input
+                                  {...skillsControl.register(`skills.${index}.icon`)}
+                                  placeholder="Code"
+                                  className="focus:ring-2 focus:ring-coral focus:border-transparent"
+                                />
+                                {skillsErrors.skills?.[index]?.icon && (
+                                  <p className="text-red-500 text-sm mt-1">
+                                    {skillsErrors.skills[index].icon?.message}
+                                  </p>
+                                )}
+                              </div>
+                              <Button
+                                type="button"
+                                variant="outline"
+                                size="sm"
+                                onClick={() => removeSkill(index)}
+                                className="hover:bg-red-50 hover:border-red-200 hover:text-red-600"
+                              >
+                                <Trash2 size={16} />
+                              </Button>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+
+                    {skillFields.length === 0 && (
+                      <div className="text-center py-12">
+                        <FileText className="mx-auto text-gray-400 mb-4" size={48} />
+                        <h3 className="text-lg font-medium text-gray-500 mb-2">Chưa có kỹ năng</h3>
+                        <p className="text-gray-400">Thêm kỹ năng đầu tiên của bạn</p>
+                      </div>
+                    )}
+                  </div>
+                  
+                  <div className="flex justify-end mt-8">
+                    <Button
+                      type="submit"
+                      className="bg-coral text-white hover:bg-opacity-90 transition-all duration-300"
+                      disabled={saveSkillsMutation.isPending}
+                    >
+                      <Save className="mr-2" size={16} />
+                      Lưu kỹ năng
+                    </Button>
+                  </div>
+                </form>
               </CardContent>
             </Card>
           </TabsContent>

@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Upload, X, Save } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -141,6 +141,12 @@ export function AddContentModal({ isOpen, onClose, editingItem }: AddContentModa
           <DialogTitle className="text-2xl font-poppins font-semibold text-slate">
             {editingItem ? "Chỉnh sửa nội dung" : "Thêm nội dung mới"}
           </DialogTitle>
+          <DialogDescription>
+            {editingItem 
+              ? "Cập nhật thông tin nội dung của bạn."
+              : "Tạo nội dung mới cho portfolio."
+            }
+          </DialogDescription>
         </DialogHeader>
         
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">

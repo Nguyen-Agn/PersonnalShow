@@ -35,6 +35,11 @@ export const otherSection = pgTable("other_section", {
     github?: string;
     dribbble?: string;
   }>(),
+  skills: jsonb("skills").$type<Array<{
+    name: string;
+    description: string;
+    icon: string;
+  }>>(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 

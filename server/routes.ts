@@ -2,6 +2,8 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertIntroSchema, insertContentSchema, insertOtherSchema } from "@shared/schema";
+import { randomUUID } from "crypto";
+import { z } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Introduction section routes
@@ -85,6 +87,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/other", async (req, res) => {
     try {
       const other = await storage.getOtherSection();
+      if (!other) {
+        return res.json({
+          id: randomUUID(),
+          contactInfo: {
+            email: "hello@example.com",
+            phone: "+84 123 456 789",
+            location: "Hà Nội, Việt Nam"
+          },
+          socialLinks: {},
+          skills: [
+            { name: "UI/UX Design", description: "Thiết kế giao diện người dùng sáng tạo", icon: "PaintbrushVertical" },
+            { name: "Frontend", description: "Phát triển giao diện web hiện đại", icon: "Code" },
+            { name: "Mobile Design", description: "Thiết kế ứng dụng di động", icon: "Smartphone" },
+            { name: "Content", description: "Tạo nội dung sáng tạo và hấp dẫn", icon: "FileImage" }
+          ],
+          updatedAt: new Date()
+        });
+      }
       res.json(other);
     } catch (error) {
       res.status(500).json({ message: "Failed to fetch other section" });
@@ -98,6 +118,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(other);
     } catch (error) {
       res.status(400).json({ message: "Invalid other section data", error });
+    }
+  });
+
+  app.put("/api/skills", async (req, res) => {
+    try {
+      const skillsSchema = z.array(z.object({
+        name: z.string(),
+        description: z.string(),
+        icon: z.string()
+      }));
+      const skills = skillsSchema.parse(req.body);
+      const other = await storage.updateSkills(skills);
+      res.json(other);
+    } catch (error) {
+      console.error("Error updating skills:", error);
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ message: "Invalid data", errors: error.errors });
+      } else {
+        res.status(500).json({ message: "Internal server error" });
+      }
     }
   });
 
