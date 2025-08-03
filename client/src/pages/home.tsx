@@ -250,7 +250,7 @@ export function HomePage() {
       ))}
 
       {/* Other Section */}
-      <section id="other" className="py-20 bg-gray-50">
+      <section id="other" className="py-20 bg-gradient-to-br from-slate-50 to-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16 animate-fade-in-up">
             <h2 className="text-4xl font-poppins font-bold text-slate mb-4">
@@ -264,9 +264,9 @@ export function HomePage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Skills Section */}
             <div className="animate-slide-in-left">
-              <Card className="bg-white rounded-2xl shadow-lg card-hover">
+              <Card className="bg-white rounded-2xl shadow-xl border border-gray-200 card-hover">
                 <CardContent className="p-8">
-                  <h3 className="text-2xl font-poppins font-semibold text-slate mb-6 flex items-center">
+                  <h3 className="text-2xl font-poppins font-bold text-gray-800 mb-6 flex items-center">
                     <Code className="text-coral mr-3" size={24} />
                     Kỹ năng
                   </h3>
@@ -316,58 +316,58 @@ export function HomePage() {
 
             {/* Contact Section */}
             <div className="animate-slide-in-right">
-              <Card className="bg-white rounded-2xl shadow-lg card-hover">
+              <Card className="bg-white rounded-2xl shadow-xl border border-gray-200 card-hover">
                 <CardContent className="p-8">
-                  <h3 className="text-2xl font-poppins font-semibold text-slate mb-6 flex items-center">
+                  <h3 className="text-2xl font-poppins font-bold text-gray-800 mb-6 flex items-center">
                     <Mail className="text-turquoise mr-3" size={24} />
                     Liên hệ
                   </h3>
                   <div className="space-y-4">
-                    <div className="flex items-center space-x-4 p-3 bg-gray-50 rounded-lg btn-hover-lift animate-fade-in-up" style={{animationDelay: '0.1s'}}>
+                    <div className="flex items-center space-x-4 p-4 bg-gray-100 rounded-lg btn-hover-lift animate-fade-in-up border border-gray-200" style={{animationDelay: '0.1s'}}>
                       <Mail className="text-coral" size={20} />
-                      <span>{other?.contactInfo?.email || "hello@portfolio.com"}</span>
+                      <span className="text-gray-700 font-medium">{other?.contactInfo?.email || "hello@portfolio.com"}</span>
                     </div>
-                    <div className="flex items-center space-x-4 p-3 bg-gray-50 rounded-lg btn-hover-lift animate-fade-in-up" style={{animationDelay: '0.2s'}}>
+                    <div className="flex items-center space-x-4 p-4 bg-gray-100 rounded-lg btn-hover-lift animate-fade-in-up border border-gray-200" style={{animationDelay: '0.2s'}}>
                       <Phone className="text-turquoise" size={20} />
-                      <span>{other?.contactInfo?.phone || "+84 123 456 789"}</span>
+                      <span className="text-gray-700 font-medium">{other?.contactInfo?.phone || "+84 123 456 789"}</span>
                     </div>
-                    <div className="flex items-center space-x-4 p-3 bg-gray-50 rounded-lg btn-hover-lift animate-fade-in-up" style={{animationDelay: '0.3s'}}>
+                    <div className="flex items-center space-x-4 p-4 bg-gray-100 rounded-lg btn-hover-lift animate-fade-in-up border border-gray-200" style={{animationDelay: '0.3s'}}>
                       <MapPin className="text-sky" size={20} />
-                      <span>{other?.contactInfo?.location || "Hà Nội, Việt Nam"}</span>
+                      <span className="text-gray-700 font-medium">{other?.contactInfo?.location || "Hà Nội, Việt Nam"}</span>
                     </div>
                   </div>
                   <div className="flex space-x-4 mt-6">
-                    {other?.socialLinks?.linkedin && (
+                    {other?.socialLinks?.facebook && (
                       <a 
-                        href={other.socialLinks.linkedin}
-                        className="w-12 h-12 bg-coral text-white rounded-full flex items-center justify-center btn-hover-scale animate-bounce-custom"
+                        href={other.socialLinks.facebook}
+                        className="w-14 h-14 bg-blue-600 text-white rounded-full flex items-center justify-center btn-hover-scale animate-bounce-custom shadow-lg border-2 border-blue-700"
                         target="_blank"
                         rel="noopener noreferrer"
                         style={{animationDelay: '0.5s'}}
                       >
-                        <i className="fab fa-linkedin"></i>
+                        <i className="fab fa-facebook-f text-lg"></i>
                       </a>
                     )}
                     {other?.socialLinks?.github && (
                       <a 
                         href={other.socialLinks.github}
-                        className="w-12 h-12 bg-turquoise text-white rounded-full flex items-center justify-center btn-hover-scale animate-bounce-custom"
+                        className="w-14 h-14 bg-gray-800 text-white rounded-full flex items-center justify-center btn-hover-scale animate-bounce-custom shadow-lg border-2 border-gray-900"
                         target="_blank"
                         rel="noopener noreferrer"
                         style={{animationDelay: '0.6s'}}
                       >
-                        <i className="fab fa-github"></i>
+                        <i className="fab fa-github text-lg"></i>
                       </a>
                     )}
-                    {other?.socialLinks?.dribbble && (
+                    {other?.socialLinks?.zalo && (
                       <a 
-                        href={other.socialLinks.dribbble}
-                        className="w-12 h-12 bg-sky text-white rounded-full flex items-center justify-center btn-hover-scale animate-bounce-custom"
+                        href={other.socialLinks.zalo}
+                        className="w-14 h-14 bg-blue-500 text-white rounded-full flex items-center justify-center btn-hover-scale animate-bounce-custom shadow-lg border-2 border-blue-600"
                         target="_blank"
                         rel="noopener noreferrer"
                         style={{animationDelay: '0.7s'}}
                       >
-                        <i className="fab fa-dribbble"></i>
+                        <span className="font-bold text-sm">Z</span>
                       </a>
                     )}
                   </div>

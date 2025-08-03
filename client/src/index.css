@@ -182,12 +182,12 @@
   --ring: hsl(210, 40%, 24%);
   --radius: 0.75rem;
   
-  /* Custom vibrant colors */
-  --coral: hsl(354, 100%, 70%);
-  --turquoise: hsl(177, 62%, 59%);
-  --sky: hsl(195, 68%, 61%);
-  --sunny: hsl(54, 100%, 68%);
-  --slate: hsl(210, 40%, 24%);
+  /* Custom vibrant colors - Enhanced contrast */
+  --coral: hsl(354, 100%, 55%);
+  --turquoise: hsl(177, 62%, 45%);
+  --sky: hsl(195, 68%, 50%);
+  --sunny: hsl(54, 100%, 55%);
+  --slate: hsl(210, 40%, 15%);
   --light-grey: hsl(210, 40%, 98%);
 }
 

@@ -70,9 +70,9 @@ export class MemStorage implements IStorage {
         location: "Hà Nội, Việt Nam",
       },
       socialLinks: {
-        linkedin: "",
+        facebook: "",
         github: "",
-        dribbble: "",
+        zalo: "",
       },
       skills: [
         { name: "UI/UX Design", description: "Thiết kế giao diện người dùng sáng tạo", icon: "PaintbrushVertical" },
@@ -177,9 +177,9 @@ export class MemStorage implements IStorage {
         ...this.otherSection,
         contactInfo: other.contactInfo || null,
         socialLinks: other.socialLinks ? {
-          linkedin: (other.socialLinks.linkedin as string) || "",
+          facebook: (other.socialLinks.facebook as string) || "",
           github: (other.socialLinks.github as string) || "",
-          dribbble: (other.socialLinks.dribbble as string) || "",
+          zalo: (other.socialLinks.zalo as string) || "",
         } : null,
         skills: other.skills ? [...other.skills] : null,
         updatedAt: new Date(),
@@ -189,9 +189,9 @@ export class MemStorage implements IStorage {
         id: randomUUID(),
         contactInfo: other.contactInfo || null,
         socialLinks: other.socialLinks ? {
-          linkedin: (other.socialLinks.linkedin as string) || "",
+          facebook: (other.socialLinks.facebook as string) || "",
           github: (other.socialLinks.github as string) || "",
-          dribbble: (other.socialLinks.dribbble as string) || "",
+          zalo: (other.socialLinks.zalo as string) || "",
         } : null,
         skills: other.skills ? [...other.skills] : null,
         updatedAt: new Date(),

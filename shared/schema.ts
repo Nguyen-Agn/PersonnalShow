@@ -32,9 +32,9 @@ export const otherSection = pgTable("other_section", {
     location: string;
   }>(),
   socialLinks: jsonb("social_links").$type<{
-    linkedin?: string;
+    facebook?: string;
     github?: string;
-    dribbble?: string;
+    zalo?: string;
   }>(),
   skills: jsonb("skills").$type<Array<{
     name: string;

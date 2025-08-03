@@ -82,9 +82,9 @@ export function AdminPage() {
         location: ""
       },
       socialLinks: other?.socialLinks || {
-        linkedin: "",
+        facebook: "",
         github: "",
-        dribbble: ""
+        zalo: ""
       }
     },
     values: {
@@ -94,9 +94,9 @@ export function AdminPage() {
         location: ""
       },
       socialLinks: other?.socialLinks || {
-        linkedin: "",
+        facebook: "",
         github: "",
-        dribbble: ""
+        zalo: ""
       }
     }
   });
@@ -729,12 +729,12 @@ export function AdminPage() {
                       <h3 className="text-lg font-semibold text-slate mb-6">Mạng xã hội</h3>
                       <div className="space-y-4">
                         <div>
-                          <Label htmlFor="linkedin">LinkedIn</Label>
+                          <Label htmlFor="facebook">Facebook</Label>
                           <Input
-                            id="linkedin"
+                            id="facebook"
                             type="url"
-                            placeholder="https://linkedin.com/in/username"
-                            {...registerOther("socialLinks.linkedin")}
+                            placeholder="https://facebook.com/yourprofile"
+                            {...registerOther("socialLinks.facebook")}
                             className="focus:ring-2 focus:ring-coral focus:border-transparent"
                           />
                         </div>
@@ -751,12 +751,12 @@ export function AdminPage() {
                         </div>
                         
                         <div>
-                          <Label htmlFor="dribbble">Dribbble</Label>
+                          <Label htmlFor="zalo">Zalo</Label>
                           <Input
-                            id="dribbble"
+                            id="zalo"
                             type="url"
-                            placeholder="https://dribbble.com/username"
-                            {...registerOther("socialLinks.dribbble")}
+                            placeholder="https://zalo.me/yourusername hoặc số điện thoại"
+                            {...registerOther("socialLinks.zalo")}
                             className="focus:ring-2 focus:ring-coral focus:border-transparent"
                           />
                         </div>
