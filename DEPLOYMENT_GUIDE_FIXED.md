@@ -10,6 +10,10 @@
 - **Nguyên nhân**: Vite tìm `/src/main.tsx` thay vì `./src/main.tsx`
 - **Giải pháp**: Đổi từ `/src/main.tsx` thành `./src/main.tsx`
 
+### 3. Lỗi Tailwind CSS configuration
+- **Nguyên nhân**: Thiếu content paths và config files trong client folder
+- **Giải pháp**: Tạo riêng `client/tailwind.config.ts` và `client/postcss.config.js`
+
 ## Cấu hình mới
 
 ### vercel.json (đã sửa)
@@ -67,9 +71,11 @@ git push
 
 ### ✅ Đã sửa:
 - Build không conflict với functions
-- Import paths đúng
-- Serverless functions hoạt động
-- Frontend build thành công
+- Import paths đúng từ `/src/main.tsx` → `./src/main.tsx`
+- Serverless functions hoạt động với `api/index.js`
+- Frontend build thành công: 734kB JS, 143kB CSS
+- Tailwind CSS config hoạt động đúng
+- Vite config tách biệt cho client
 
 ### ✅ Hoạt động bình thường:
 - Portfolio website đầy đủ
