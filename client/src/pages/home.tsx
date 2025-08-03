@@ -77,48 +77,18 @@ export function HomePage() {
         </div>
       </section>
 
-      {/* Content Section - Default Section */}
-      <section id="content" className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16 animate-fade-in-up">
-            <h2 className="text-4xl font-poppins font-bold text-slate mb-4">
-              Nội dung của tôi
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Khám phá những dự án, bài viết và video mà tôi đã tạo ra
-            </p>
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {contentItems.filter(item => item.sectionId === "default" || !item.sectionId).length > 0 ? (
-              contentItems.filter(item => item.sectionId === "default" || !item.sectionId).map((item, index) => (
-                <div key={item.id} className="animate-fade-in-up" style={{animationDelay: `${index * 0.1}s`}}>
-                  <ContentCard item={item} />
-                </div>
-              ))
-            ) : (
-              <>
-                <div className="animate-fade-in-up" style={{animationDelay: '0.1s'}}>
-                  <EmptyContentCard />
-                </div>
-                <div className="animate-fade-in-up" style={{animationDelay: '0.2s'}}>
-                  <EmptyContentCard />
-                </div>
-                <div className="animate-fade-in-up" style={{animationDelay: '0.3s'}}>
-                  <EmptyContentCard />
-                </div>
-              </>
-            )}
-          </div>
-        </div>
-      </section>
 
-      {/* Custom Sections */}
-      {customSections.map((section, sectionIndex) => (
-        <section 
-          key={section.id} 
-          className={`py-20 ${sectionIndex % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`}
-        >
+      {/* All Sections */}
+      {customSections.map((section, sectionIndex) => {
+        // Get items for this section
+        const sectionItems = contentItems.filter(item => item.sectionId === section.id || (!item.sectionId && section.id === "default"));
+        
+        return (
+          <section 
+            key={section.id} 
+            className={`py-20 ${sectionIndex % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`}
+          >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16 animate-fade-in-up">
               <h2 className="text-4xl font-poppins font-bold text-slate mb-4">
@@ -133,29 +103,13 @@ export function HomePage() {
 
             {section.type === 'grid' && (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {section.items?.map((item, itemIndex) => (
-                  <div key={item.id} className="animate-fade-in-up" style={{animationDelay: `${itemIndex * 0.1}s`}}>
-                    <Card className="bg-white rounded-2xl shadow-lg card-hover">
-                      <CardContent className="p-6">
-                        <div className="flex items-center mb-4">
-                          {item.type === 'text' && <FileImage className="text-coral mr-3" size={24} />}
-                          {item.type === 'image' && <FileImage className="text-turquoise mr-3" size={24} />}
-                          {item.type === 'video' && <FileImage className="text-sky mr-3" size={24} />}
-                          <h3 className="text-xl font-poppins font-semibold text-slate">{item.title}</h3>
-                        </div>
-                        {item.description && (
-                          <p className="text-gray-600 mb-4">{item.description}</p>
-                        )}
-                        {item.content && (
-                          <p className="text-gray-700">{item.content}</p>
-                        )}
-                        {item.mediaUrl && (
-                          <img src={item.mediaUrl} alt={item.title} className="w-full h-48 object-cover rounded-lg mt-4 hover:scale-105 transition-transform duration-300" />
-                        )}
-                      </CardContent>
-                    </Card>
-                  </div>
-                )) || (
+                {sectionItems.length > 0 ? (
+                  sectionItems.map((item, itemIndex) => (
+                    <div key={item.id} className="animate-fade-in-up" style={{animationDelay: `${itemIndex * 0.1}s`}}>
+                      <ContentCard item={item} />
+                    </div>
+                  ))
+                ) : (
                   <>
                     <div className="animate-fade-in-up" style={{animationDelay: '0.1s'}}>
                       <EmptyContentCard />
@@ -173,28 +127,30 @@ export function HomePage() {
 
             {section.type === 'list' && (
               <div className="space-y-6">
-                {section.items?.map((item, itemIndex) => (
-                  <div key={item.id} className="animate-slide-in-left" style={{animationDelay: `${itemIndex * 0.1}s`}}>
-                    <Card className="bg-white rounded-2xl shadow-lg card-hover">
-                      <CardContent className="p-6">
-                        <div className="flex items-start gap-4">
-                          {item.type === 'text' && <FileImage className="text-coral mt-1" size={24} />}
-                          {item.type === 'image' && <FileImage className="text-turquoise mt-1" size={24} />}
-                          {item.type === 'video' && <FileImage className="text-sky mt-1" size={24} />}
-                          <div className="flex-1">
-                            <h3 className="text-xl font-poppins font-semibold text-slate mb-2">{item.title}</h3>
-                            {item.description && (
-                              <p className="text-gray-600 mb-4">{item.description}</p>
-                            )}
-                            {item.content && (
-                              <p className="text-gray-700">{item.content}</p>
-                            )}
+                {sectionItems.length > 0 ? (
+                  sectionItems.map((item, itemIndex) => (
+                    <div key={item.id} className="animate-slide-in-left" style={{animationDelay: `${itemIndex * 0.1}s`}}>
+                      <Card className="bg-white rounded-2xl shadow-lg card-hover">
+                        <CardContent className="p-6">
+                          <div className="flex items-start gap-4">
+                            {item.type === 'text' && <FileImage className="text-coral mt-1" size={24} />}
+                            {item.type === 'image' && <FileImage className="text-turquoise mt-1" size={24} />}
+                            {item.type === 'video' && <FileImage className="text-sky mt-1" size={24} />}
+                            <div className="flex-1">
+                              <h3 className="text-xl font-poppins font-semibold text-slate mb-2">{item.title}</h3>
+                              {item.excerpt && (
+                                <p className="text-gray-600 mb-4">{item.excerpt}</p>
+                              )}
+                              {item.content && (
+                                <p className="text-gray-700">{item.content}</p>
+                              )}
+                            </div>
                           </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </div>
-                )) || (
+                        </CardContent>
+                      </Card>
+                    </div>
+                  ))
+                ) : (
                   <div className="text-center py-12 animate-fade-in-up">
                     <FileImage className="mx-auto text-gray-400 mb-4" size={48} />
                     <h3 className="text-lg font-medium text-gray-500 mb-2">Chưa khả dụng</h3>
@@ -206,23 +162,25 @@ export function HomePage() {
 
             {section.type === 'cards' && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {section.items?.map((item, itemIndex) => (
-                  <div key={item.id} className="animate-scale-in" style={{animationDelay: `${itemIndex * 0.2}s`}}>
-                    <Card className="bg-white rounded-2xl shadow-lg card-hover">
-                      <CardContent className="p-8">
-                        <div className="text-center">
-                          {item.type === 'text' && <FileImage className="mx-auto text-coral mb-4 animate-pulse-custom" size={32} />}
-                          {item.type === 'image' && <FileImage className="mx-auto text-turquoise mb-4 animate-pulse-custom" size={32} />}
-                          {item.type === 'video' && <FileImage className="mx-auto text-sky mb-4 animate-pulse-custom" size={32} />}
-                          <h3 className="text-xl font-poppins font-semibold text-slate mb-4">{item.title}</h3>
-                          {item.description && (
-                            <p className="text-gray-600">{item.description}</p>
-                          )}
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </div>
-                )) || (
+                {sectionItems.length > 0 ? (
+                  sectionItems.map((item, itemIndex) => (
+                    <div key={item.id} className="animate-scale-in" style={{animationDelay: `${itemIndex * 0.2}s`}}>
+                      <Card className="bg-white rounded-2xl shadow-lg card-hover">
+                        <CardContent className="p-8">
+                          <div className="text-center">
+                            {item.type === 'text' && <FileImage className="mx-auto text-coral mb-4 animate-pulse-custom" size={32} />}
+                            {item.type === 'image' && <FileImage className="mx-auto text-turquoise mb-4 animate-pulse-custom" size={32} />}
+                            {item.type === 'video' && <FileImage className="mx-auto text-sky mb-4 animate-pulse-custom" size={32} />}
+                            <h3 className="text-xl font-poppins font-semibold text-slate mb-4">{item.title}</h3>
+                            {item.excerpt && (
+                              <p className="text-gray-600">{item.excerpt}</p>
+                            )}
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </div>
+                  ))
+                ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div className="animate-scale-in" style={{animationDelay: '0.1s'}}>
                       <Card className="bg-white rounded-2xl shadow-lg card-hover">
@@ -248,7 +206,8 @@ export function HomePage() {
             )}
           </div>
         </section>
-      ))}
+        );
+      })}
 
       {/* Other Section */}
       <section id="other" className="py-20 bg-gradient-to-br from-slate-50 to-gray-100">
