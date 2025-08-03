@@ -49,12 +49,13 @@ Currently uses a simple admin mode toggle without formal authentication. The sys
 ## Recent Updates
 
 ### Vercel Deployment Optimization (Aug 2025)
-- **Serverless Architecture**: Restructured application for Vercel's serverless functions with `/api/index.ts` entry point
-- **Build Configuration**: Created comprehensive `vercel.json` with proper routing for API endpoints and static assets
-- **Client Build Setup**: Added dedicated `client/package.json` for Vercel's static build process
+- **Serverless Architecture**: Restructured application for Vercel's serverless functions with `/api/index.js` entry point
+- **Build Configuration Fix**: Resolved Vercel build conflicts by separating frontend build and serverless functions
+- **Import Path Fix**: Fixed Vite build issue by changing `/src/main.tsx` to `./src/main.tsx` in index.html
+- **Client Build Setup**: Optimized build command to `cd client && npm install && npm run build`
 - **In-memory Storage**: Maintained MemStorage for production deployment (no external database dependencies)
-- **Deployment Documentation**: Created detailed `DEPLOYMENT_GUIDE.md` with step-by-step Vercel deployment instructions
-- **Environment Configuration**: Added `.env.example` and Vercel-specific environment variable setup
+- **Deployment Documentation**: Created `DEPLOYMENT_GUIDE_FIXED.md` with corrected Vercel deployment config
+- **Environment Configuration**: Added proper error handling in Vercel handler
 - **Offline Capabilities**: File upload system gracefully falls back to offline mode when cloud storage unavailable
 
 ### Object Storage Integration (Aug 2025)
