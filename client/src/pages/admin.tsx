@@ -303,11 +303,6 @@ export function AdminPage() {
                         <Upload className="mx-auto text-gray-400 mb-4" size={32} />
                         <p className="text-gray-500 mb-2">Thêm ảnh</p>
                         <p className="text-sm text-gray-400">PNG, JPG lên đến 10MB</p>
-                        <input
-                          type="file"
-                          accept="image/*"
-                          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                        />
                       </div>
                     </div>
                   </div>
