@@ -98,16 +98,22 @@ export function ContentCard({ item, isAdmin = false, onEdit, onDelete }: Content
         )}
         {item.type === "video" && item.mediaUrl && (
           <div className="relative">
-            <img 
-              src={item.mediaUrl} 
-              alt={item.title}
-              className="w-full h-48 object-cover"
-            />
-            <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
-              <div className="w-16 h-16 bg-white bg-opacity-90 rounded-full flex items-center justify-center hover:bg-opacity-100 transition-all duration-300">
-                <Video className="text-coral ml-1" size={20} />
+            {item.mediaUrl.includes('youtube.com') || item.mediaUrl.includes('youtu.be') ? (
+              <div className="aspect-w-16 aspect-h-9">
+                <iframe
+                  src={item.mediaUrl.replace('watch?v=', 'embed/')}
+                  className="w-full h-48"
+                  allowFullScreen
+                />
               </div>
-            </div>
+            ) : (
+              <video
+                src={item.mediaUrl}
+                poster={item.mediaUrl}
+                controls
+                className="w-full h-48 object-cover"
+              />
+            )}
           </div>
         )}
         

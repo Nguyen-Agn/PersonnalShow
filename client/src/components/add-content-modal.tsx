@@ -13,6 +13,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import type { ContentItem, InsertContentItem } from "@shared/schema";
+import { ObjectUploader } from "@/components/ObjectUploader";
+import type { UploadResult } from "@uppy/core";
 
 const contentFormSchema = z.object({
   title: z.string().min(1, "Tiêu đề không được để trống"),
@@ -35,7 +37,6 @@ interface AddContentModalProps {
 export function AddContentModal({ isOpen, onClose, editingItem, selectedSectionId = "default" }: AddContentModalProps) {
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   
   const {
     register,
@@ -128,20 +129,10 @@ export function AddContentModal({ isOpen, onClose, editingItem, selectedSectionI
 
   const handleClose = () => {
     reset();
-    setSelectedFile(null);
     onClose();
   };
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      setSelectedFile(file);
-      // In a real app, you would upload the file and get a URL
-      // For now, we'll use a placeholder URL
-      const mockUrl = URL.createObjectURL(file);
-      setValue("mediaUrl", mockUrl);
-    }
-  };
+
 
   const onSubmit = (data: ContentFormData) => {
     console.log("Form data:", data);
@@ -228,22 +219,50 @@ export function AddContentModal({ isOpen, onClose, editingItem, selectedSectionI
             <>
               <div>
                 <Label>Tải ảnh lên</Label>
-                <div className="relative border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-coral transition-colors duration-300 overflow-hidden">
-                  <Upload className="mx-auto text-gray-400 mb-4" size={32} />
-                  <p className="text-gray-500 mb-2">Thêm ảnh</p>
-                  <p className="text-sm text-gray-400">PNG, JPG lên đến 10MB</p>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFileChange}
-                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
-                  />
-                </div>
-                {selectedFile && (
-                  <p className="text-sm text-green-600 mt-2">
-                    Đã chọn: {selectedFile.name}
-                  </p>
-                )}
+                <ObjectUploader
+                  maxNumberOfFiles={1}
+                  maxFileSize={10485760} // 10MB
+                  onGetUploadParameters={async () => {
+                    const response = await fetch('/api/objects/upload', {
+                      method: 'POST'
+                    });
+                    const data = await response.json();
+                    return {
+                      method: 'PUT' as const,
+                      url: data.uploadURL
+                    };
+                  }}
+                  onComplete={(result: UploadResult<Record<string, unknown>, Record<string, unknown>>) => {
+                    if (result.successful.length > 0) {
+                      const uploadURL = result.successful[0].uploadURL;
+                      setValue("mediaUrl", uploadURL);
+                      
+                      // Set ACL policy for the uploaded file
+                      fetch('/api/uploaded-content', {
+                        method: 'PUT',
+                        headers: {
+                          'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ fileURL: uploadURL })
+                      }).then(res => res.json()).then(data => {
+                        setValue("mediaUrl", data.objectPath);
+                        toast({
+                          title: "Thành công",
+                          description: "Ảnh đã được tải lên thành công!"
+                        });
+                      }).catch(error => {
+                        console.error('Error setting file ACL:', error);
+                      });
+                    }
+                  }}
+                  buttonClassName="w-full border-2 border-dashed border-gray-300 hover:border-coral transition-colors duration-300 p-8 text-center bg-transparent text-gray-500 hover:text-coral hover:bg-coral/5"
+                >
+                  <div className="flex flex-col items-center gap-2">
+                    <Upload size={32} />
+                    <span>Thêm ảnh</span>
+                    <p className="text-sm text-gray-400">PNG, JPG lên đến 10MB</p>
+                  </div>
+                </ObjectUploader>
               </div>
               <div>
                 <Label htmlFor="content">Mô tả ảnh</Label>
@@ -276,17 +295,50 @@ export function AddContentModal({ isOpen, onClose, editingItem, selectedSectionI
               
               <div>
                 <Label>Tải video lên</Label>
-                <div className="relative border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-coral transition-colors duration-300 overflow-hidden">
-                  <Upload className="mx-auto text-gray-400 mb-4" size={32} />
-                  <p className="text-gray-500 mb-2">Tải video lên</p>
-                  <p className="text-sm text-gray-400">MP4, AVI lên đến 100MB</p>
-                  <input
-                    type="file"
-                    accept="video/*"
-                    onChange={handleFileChange}
-                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
-                  />
-                </div>
+                <ObjectUploader
+                  maxNumberOfFiles={1}
+                  maxFileSize={104857600} // 100MB
+                  onGetUploadParameters={async () => {
+                    const response = await fetch('/api/objects/upload', {
+                      method: 'POST'
+                    });
+                    const data = await response.json();
+                    return {
+                      method: 'PUT' as const,
+                      url: data.uploadURL
+                    };
+                  }}
+                  onComplete={(result: UploadResult<Record<string, unknown>, Record<string, unknown>>) => {
+                    if (result.successful.length > 0) {
+                      const uploadURL = result.successful[0].uploadURL;
+                      setValue("mediaUrl", uploadURL);
+                      
+                      // Set ACL policy for the uploaded file
+                      fetch('/api/uploaded-content', {
+                        method: 'PUT',
+                        headers: {
+                          'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ fileURL: uploadURL })
+                      }).then(res => res.json()).then(data => {
+                        setValue("mediaUrl", data.objectPath);
+                        toast({
+                          title: "Thành công",
+                          description: "Video đã được tải lên thành công!"
+                        });
+                      }).catch(error => {
+                        console.error('Error setting file ACL:', error);
+                      });
+                    }
+                  }}
+                  buttonClassName="w-full border-2 border-dashed border-gray-300 hover:border-coral transition-colors duration-300 p-8 text-center bg-transparent text-gray-500 hover:text-coral hover:bg-coral/5"
+                >
+                  <div className="flex flex-col items-center gap-2">
+                    <Upload size={32} />
+                    <span>Tải video lên</span>
+                    <p className="text-sm text-gray-400">MP4, AVI lên đến 100MB</p>
+                  </div>
+                </ObjectUploader>
               </div>
 
               <div>

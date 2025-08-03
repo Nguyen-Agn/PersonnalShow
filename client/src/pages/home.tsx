@@ -152,6 +152,34 @@ export function HomePage() {
                               {item.excerpt && (
                                 <p className="text-gray-600 mb-4">{item.excerpt}</p>
                               )}
+                              {item.type === "image" && item.mediaUrl && (
+                                <div className="mb-4">
+                                  <img
+                                    src={item.mediaUrl}
+                                    alt={item.title}
+                                    className="w-full h-48 object-cover rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
+                                  />
+                                </div>
+                              )}
+                              {item.type === "video" && item.mediaUrl && (
+                                <div className="mb-4">
+                                  {item.mediaUrl.includes('youtube.com') || item.mediaUrl.includes('youtu.be') ? (
+                                    <div className="aspect-w-16 aspect-h-9">
+                                      <iframe
+                                        src={item.mediaUrl.replace('watch?v=', 'embed/')}
+                                        className="w-full h-48 rounded-lg"
+                                        allowFullScreen
+                                      />
+                                    </div>
+                                  ) : (
+                                    <video
+                                      src={item.mediaUrl}
+                                      controls
+                                      className="w-full h-48 object-cover rounded-lg shadow-md"
+                                    />
+                                  )}
+                                </div>
+                              )}
                               {item.content && (
                                 <p className="text-gray-700">{item.content}</p>
                               )}
@@ -184,7 +212,38 @@ export function HomePage() {
                             {item.type === 'video' && <FileImage className="mx-auto text-sky mb-4 animate-pulse-custom" size={32} />}
                             <h3 className="text-xl font-poppins font-semibold text-slate mb-4">{item.title}</h3>
                             {item.excerpt && (
-                              <p className="text-gray-600">{item.excerpt}</p>
+                              <p className="text-gray-600 mb-4">{item.excerpt}</p>
+                            )}
+                            {item.type === "image" && item.mediaUrl && (
+                              <div className="mb-4">
+                                <img
+                                  src={item.mediaUrl}
+                                  alt={item.title}
+                                  className="w-full h-48 object-cover rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
+                                />
+                              </div>
+                            )}
+                            {item.type === "video" && item.mediaUrl && (
+                              <div className="mb-4">
+                                {item.mediaUrl.includes('youtube.com') || item.mediaUrl.includes('youtu.be') ? (
+                                  <div className="aspect-w-16 aspect-h-9">
+                                    <iframe
+                                      src={item.mediaUrl.replace('watch?v=', 'embed/')}
+                                      className="w-full h-48 rounded-lg"
+                                      allowFullScreen
+                                    />
+                                  </div>
+                                ) : (
+                                  <video
+                                    src={item.mediaUrl}
+                                    controls
+                                    className="w-full h-48 object-cover rounded-lg shadow-md"
+                                  />
+                                )}
+                              </div>
+                            )}
+                            {item.content && (
+                              <p className="text-gray-700">{item.content}</p>
                             )}
                           </div>
                         </CardContent>

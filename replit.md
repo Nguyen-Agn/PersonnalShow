@@ -48,6 +48,14 @@ Currently uses a simple admin mode toggle without formal authentication. The sys
 
 ## Recent Updates
 
+### Object Storage Integration (Aug 2025)
+- **Persistent File Storage**: Implemented comprehensive object storage system with Replit's cloud storage
+- **File Upload System**: Added ObjectUploader component with drag-drop functionality and progress tracking
+- **Server-side Storage Routes**: Created full upload/download API with proper ACL policies for public access
+- **Admin Upload Integration**: Seamlessly integrated file upload into content creation modal for images and videos
+- **Content Display**: Enhanced home page to properly display uploaded images and videos from object storage
+- **Storage Persistence**: All uploaded files now survive application restarts with proper cloud storage
+
 ### UI Design Consistency Fix (Aug 2025)
 - **Button Styling Standardization**: Replaced all complex gradient backgrounds with simple coral/turquoise colors
 - **Icon Container Simplification**: Changed all icon containers from gradient backgrounds to solid colors (coral, turquoise, sky, sunny)
