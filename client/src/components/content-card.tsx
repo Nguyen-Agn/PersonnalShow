@@ -134,7 +134,7 @@ export function ContentCard({ item, isAdmin = false, onEdit, onDelete }: Content
             <Button 
               size="sm"
               onClick={() => setShowDetailModal(true)}
-              className="bg-gradient-to-r from-coral to-turquoise text-white hover:from-turquoise hover:to-sky transition-all duration-300 btn-hover-scale"
+              className="bg-coral text-white hover:bg-turquoise transition-all duration-300 btn-hover-scale border-0"
             >
               <Eye className="mr-1" size={16} />
               {item.type === "text" ? "Đọc thêm" : "Xem"}

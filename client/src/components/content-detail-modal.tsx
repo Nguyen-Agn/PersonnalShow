@@ -1,6 +1,6 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, FileText, Image as ImageIcon, Video, X } from "lucide-react";
+import { Calendar, FileText, Image as ImageIcon, Video } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { ContentItem } from "@shared/schema";
 
@@ -10,8 +10,9 @@ interface ContentDetailModalProps {
   item: ContentItem | null;
 }
 
-function formatDate(dateString: string) {
-  return new Date(dateString).toLocaleDateString('vi-VN', {
+function formatDate(dateString: string | Date) {
+  const date = typeof dateString === 'string' ? new Date(dateString) : dateString;
+  return date.toLocaleDateString('vi-VN', {
     year: 'numeric',
     month: 'long',
     day: 'numeric'
@@ -24,7 +25,7 @@ export function ContentDetailModal({ isOpen, onClose, item }: ContentDetailModal
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader className="flex flex-row items-center justify-between">
+        <DialogHeader>
           <div className="flex items-center gap-3">
             {item.type === 'text' && <FileText className="text-coral" size={24} />}
             {item.type === 'image' && <ImageIcon className="text-turquoise" size={24} />}
@@ -33,9 +34,6 @@ export function ContentDetailModal({ isOpen, onClose, item }: ContentDetailModal
               {item.title}
             </DialogTitle>
           </div>
-          <Button variant="ghost" size="sm" onClick={onClose}>
-            <X size={16} />
-          </Button>
         </DialogHeader>
         
         <div className="space-y-6">

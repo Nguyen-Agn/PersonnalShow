@@ -221,20 +221,21 @@ export function HomePage() {
       })}
 
       {/* Skills & Contact Section */}
-      <section id="other" className="py-20 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 relative overflow-hidden">
+      <section id="other" className="py-20 bg-gradient-to-br from-gray-50 to-white relative overflow-hidden">
         {/* Background Effects */}
-        <div className="absolute inset-0">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-coral/10 rounded-full blur-3xl animate-pulse-custom"></div>
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-turquoise/10 rounded-full blur-3xl animate-bounce-custom"></div>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-sky/5 rounded-full blur-3xl"></div>
+        <div className="absolute inset-0 opacity-30">
+          <div className="absolute top-20 left-10 w-72 h-72 bg-coral/20 rounded-full blur-3xl animate-pulse-custom"></div>
+          <div className="absolute bottom-20 right-10 w-96 h-96 bg-turquoise/20 rounded-full blur-3xl animate-bounce-custom"></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-sky/10 rounded-full blur-3xl"></div>
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center mb-16 animate-fade-in-up">
-            <h2 className="text-5xl font-poppins font-bold text-white mb-6">
+            <h2 className="text-4xl font-poppins font-bold text-slate mb-6 relative">
               Kỹ năng & Liên hệ
+              <div className="w-24 h-1 bg-gradient-to-r from-coral to-turquoise mx-auto mt-4 rounded-full"></div>
             </h2>
-            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
               Khám phá những kỹ năng của tôi và cách thức liên hệ
             </p>
           </div>
@@ -242,7 +243,7 @@ export function HomePage() {
           {/* Skills Section */}
           <div className="mb-20 animate-slide-in-left">
             <div className="text-center mb-12">
-              <h3 className="text-3xl font-poppins font-bold text-white mb-4 flex items-center justify-center">
+              <h3 className="text-3xl font-poppins font-bold text-slate mb-4 flex items-center justify-center">
                 <Code className="text-coral mr-3 animate-pulse-custom" size={32} />
                 Kỹ năng chuyên môn
               </h3>
@@ -254,10 +255,10 @@ export function HomePage() {
                 other.skills.map((skill, index) => (
                   <div 
                     key={index} 
-                    className={`group relative bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 text-center btn-hover-scale animate-fade-in-up transition-all duration-500 hover:bg-white/20 hover:scale-105`}
+                    className={`group relative bg-white/80 backdrop-blur-sm border border-gray-200 rounded-2xl p-6 text-center btn-hover-scale animate-fade-in-up transition-all duration-500 hover:bg-white hover:scale-105 shadow-lg`}
                     style={{animationDelay: `${index * 0.15}s`}}
                   >
-                    <div className="absolute inset-0 bg-gradient-to-br from-coral/20 via-turquoise/20 to-sky/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div className="absolute inset-0 bg-gradient-to-br from-coral/10 via-turquoise/10 to-sky/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     <div className="relative z-10">
                       <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-coral to-turquoise rounded-2xl flex items-center justify-center group-hover:rotate-12 transition-transform duration-500">
                         {skill.icon === 'PaintbrushVertical' && <PaintbrushVertical className="text-white" size={28} />}
@@ -265,11 +266,11 @@ export function HomePage() {
                         {skill.icon === 'Smartphone' && <Smartphone className="text-white" size={28} />}
                         {skill.icon === 'FileImage' && <FileImage className="text-white" size={28} />}
                       </div>
-                      <h4 className="text-lg font-semibold text-white mb-2 group-hover:text-coral transition-colors duration-300">
+                      <h4 className="text-lg font-semibold text-slate mb-2 group-hover:text-coral transition-colors duration-300">
                         {skill.name}
                       </h4>
                       {skill.description && (
-                        <p className="text-sm text-gray-300 group-hover:text-white transition-colors duration-300">
+                        <p className="text-sm text-gray-600 group-hover:text-gray-800 transition-colors duration-300">
                           {skill.description}
                         </p>
                       )}
@@ -326,7 +327,7 @@ export function HomePage() {
           {/* Contact Section */}
           <div className="animate-slide-in-right">
             <div className="text-center mb-12">
-              <h3 className="text-3xl font-poppins font-bold text-white mb-4 flex items-center justify-center">
+              <h3 className="text-3xl font-poppins font-bold text-slate mb-4 flex items-center justify-center">
                 <Mail className="text-turquoise mr-3 animate-pulse-custom" size={32} />
                 Thông tin liên hệ
               </h3>
@@ -334,32 +335,32 @@ export function HomePage() {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
-              <div className="group bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 text-center btn-hover-lift animate-fade-in-up transition-all duration-500 hover:bg-white/20" style={{animationDelay: '0.1s'}}>
+              <div className="group bg-white/80 backdrop-blur-sm border border-gray-200 rounded-2xl p-6 text-center btn-hover-lift animate-fade-in-up transition-all duration-500 hover:bg-white shadow-lg" style={{animationDelay: '0.1s'}}>
                 <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-coral to-pink-500 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
                   <Mail className="text-white" size={28} />
                 </div>
-                <h4 className="text-lg font-semibold text-white mb-2">Email</h4>
-                <p className="text-gray-300 group-hover:text-white transition-colors duration-300">
+                <h4 className="text-lg font-semibold text-slate mb-2">Email</h4>
+                <p className="text-gray-600 group-hover:text-gray-800 transition-colors duration-300">
                   {other?.contactInfo?.email || "hello@portfolio.com"}
                 </p>
               </div>
 
-              <div className="group bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 text-center btn-hover-lift animate-fade-in-up transition-all duration-500 hover:bg-white/20" style={{animationDelay: '0.2s'}}>
+              <div className="group bg-white/80 backdrop-blur-sm border border-gray-200 rounded-2xl p-6 text-center btn-hover-lift animate-fade-in-up transition-all duration-500 hover:bg-white shadow-lg" style={{animationDelay: '0.2s'}}>
                 <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-turquoise to-blue-500 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
                   <Phone className="text-white" size={28} />
                 </div>
-                <h4 className="text-lg font-semibold text-white mb-2">Điện thoại</h4>
-                <p className="text-gray-300 group-hover:text-white transition-colors duration-300">
+                <h4 className="text-lg font-semibold text-slate mb-2">Điện thoại</h4>
+                <p className="text-gray-600 group-hover:text-gray-800 transition-colors duration-300">
                   {other?.contactInfo?.phone || "+84 123 456 789"}
                 </p>
               </div>
 
-              <div className="group bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 text-center btn-hover-lift animate-fade-in-up transition-all duration-500 hover:bg-white/20" style={{animationDelay: '0.3s'}}>
+              <div className="group bg-white/80 backdrop-blur-sm border border-gray-200 rounded-2xl p-6 text-center btn-hover-lift animate-fade-in-up transition-all duration-500 hover:bg-white shadow-lg" style={{animationDelay: '0.3s'}}>
                 <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-sky to-blue-600 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
                   <MapPin className="text-white" size={28} />
                 </div>
-                <h4 className="text-lg font-semibold text-white mb-2">Địa chỉ</h4>
-                <p className="text-gray-300 group-hover:text-white transition-colors duration-300">
+                <h4 className="text-lg font-semibold text-slate mb-2">Địa chỉ</h4>
+                <p className="text-gray-600 group-hover:text-gray-800 transition-colors duration-300">
                   {other?.contactInfo?.location || "Hà Nội, Việt Nam"}
                 </p>
               </div>
@@ -367,7 +368,7 @@ export function HomePage() {
 
             {/* Social Media */}
             <div className="text-center">
-              <h4 className="text-xl font-semibold text-white mb-6">Kết nối với tôi</h4>
+              <h4 className="text-xl font-semibold text-slate mb-6">Kết nối với tôi</h4>
               <div className="flex justify-center space-x-6">
                 {other?.socialLinks?.facebook && (
                   <a 
