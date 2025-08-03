@@ -87,12 +87,23 @@ export function HomePage() {
         return (
           <section 
             key={section.id} 
-            className={`py-20 ${sectionIndex % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`}
+            className={`py-20 relative overflow-hidden ${
+              sectionIndex % 2 === 0 
+                ? 'bg-gradient-to-br from-gray-50 to-white' 
+                : 'bg-gradient-to-br from-slate-100 via-gray-50 to-white'
+            }`}
           >
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            {/* Background Decorative Elements */}
+            <div className="absolute inset-0 opacity-20">
+              <div className={`absolute top-10 ${sectionIndex % 2 === 0 ? 'left-10' : 'right-10'} w-32 h-32 bg-coral/20 rounded-full blur-2xl animate-pulse-custom`}></div>
+              <div className={`absolute bottom-10 ${sectionIndex % 2 === 0 ? 'right-10' : 'left-10'} w-40 h-40 bg-turquoise/20 rounded-full blur-2xl`} style={{animationDelay: '2s'}}></div>
+            </div>
+
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div className="text-center mb-16 animate-fade-in-up">
-              <h2 className="text-4xl font-poppins font-bold text-slate mb-4">
+              <h2 className="text-4xl font-poppins font-bold text-slate mb-6 relative">
                 {section.title}
+                <div className="w-24 h-1 bg-gradient-to-r from-coral to-turquoise mx-auto mt-4 rounded-full"></div>
               </h2>
               {section.description && (
                 <p className="text-xl text-gray-600 max-w-3xl mx-auto">

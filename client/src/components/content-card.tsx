@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { FileText, Image, Video, Eye, Edit2, Trash2 } from "lucide-react";
 import type { ContentItem } from "@shared/schema";
+import { useState } from "react";
+import { ContentDetailModal } from "./content-detail-modal";
 
 interface ContentCardProps {
   item: ContentItem;
@@ -12,6 +14,7 @@ interface ContentCardProps {
 }
 
 export function ContentCard({ item, isAdmin = false, onEdit, onDelete }: ContentCardProps) {
+  const [showDetailModal, setShowDetailModal] = useState(false);
   const getIcon = () => {
     switch (item.type) {
       case "text":
@@ -84,76 +87,79 @@ export function ContentCard({ item, isAdmin = false, onEdit, onDelete }: Content
   }
 
   return (
-    <Card className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden card-hover">
-      {item.type === "image" && item.mediaUrl && (
-        <img 
-          src={item.mediaUrl} 
-          alt={item.title}
-          className="w-full h-48 object-cover"
-        />
-      )}
-      {item.type === "video" && item.mediaUrl && (
-        <div className="relative">
+    <>
+      <Card className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden card-hover">
+        {item.type === "image" && item.mediaUrl && (
           <img 
             src={item.mediaUrl} 
             alt={item.title}
             className="w-full h-48 object-cover"
           />
-          <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
-            <div className="w-16 h-16 bg-white bg-opacity-90 rounded-full flex items-center justify-center hover:bg-opacity-100 transition-all duration-300">
-              <Video className="text-coral ml-1" size={20} />
+        )}
+        {item.type === "video" && item.mediaUrl && (
+          <div className="relative">
+            <img 
+              src={item.mediaUrl} 
+              alt={item.title}
+              className="w-full h-48 object-cover"
+            />
+            <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
+              <div className="w-16 h-16 bg-white bg-opacity-90 rounded-full flex items-center justify-center hover:bg-opacity-100 transition-all duration-300">
+                <Video className="text-coral ml-1" size={20} />
+              </div>
             </div>
-          </div>
-        </div>
-      )}
-      
-      <CardContent className="p-6">
-        {item.type === "text" && (
-          <div className="w-12 h-12 bg-gradient-to-br from-coral to-turquoise rounded-lg flex items-center justify-center mb-4">
-            <FileText className="text-white" size={20} />
           </div>
         )}
         
-        <h3 className="text-xl font-poppins font-semibold text-slate mb-3">
-          {item.title}
-        </h3>
-        
-        <p className="text-gray-600 mb-4">
-          {item.excerpt || item.content?.substring(0, 100) + "..." || ""}
-        </p>
-        
-        <div className="flex items-center justify-between">
-          <span className="text-sm text-gray-500">
-            {formatDate(item.createdAt)}
-          </span>
+        <CardContent className="p-6">
+          {item.type === "text" && (
+            <div className="w-12 h-12 bg-gradient-to-br from-coral to-turquoise rounded-lg flex items-center justify-center mb-4">
+              <FileText className="text-white" size={20} />
+            </div>
+          )}
           
-          {item.type === "text" ? (
-            <span className="text-coral hover:text-turquoise transition-colors duration-300 cursor-pointer">
-              Đọc thêm →
+          <h3 className="text-xl font-poppins font-semibold text-slate mb-3">
+            {item.title}
+          </h3>
+          
+          <p className="text-gray-600 mb-4">
+            {item.excerpt || item.content?.substring(0, 100) + "..." || ""}
+          </p>
+          
+          <div className="flex items-center justify-between">
+            <span className="text-sm text-gray-500">
+              {formatDate(item.createdAt)}
             </span>
-          ) : (
+            
             <Button 
               size="sm"
-              className="bg-turquoise text-white hover:bg-sky transition-colors duration-300"
+              onClick={() => setShowDetailModal(true)}
+              className="bg-gradient-to-r from-coral to-turquoise text-white hover:from-turquoise hover:to-sky transition-all duration-300 btn-hover-scale"
             >
               <Eye className="mr-1" size={16} />
-              Xem
+              {item.type === "text" ? "Đọc thêm" : "Xem"}
             </Button>
-          )}
-        </div>
-      </CardContent>
-    </Card>
+          </div>
+        </CardContent>
+      </Card>
+      
+      <ContentDetailModal 
+        isOpen={showDetailModal}
+        onClose={() => setShowDetailModal(false)}
+        item={item}
+      />
+    </>
   );
 }
 
 export function EmptyContentCard() {
   return (
-    <div className="bg-gray-50 border-2 border-dashed border-gray-300 rounded-2xl p-8 text-center min-h-[300px] flex flex-col items-center justify-center card-hover">
-      <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mb-4 animate-pulse-custom">
-        <FileText className="text-gray-400" size={24} />
+    <div className="bg-white/70 backdrop-blur-sm border border-gray-200 rounded-3xl p-12 text-center min-h-[300px] flex flex-col items-center justify-center card-hover shadow-lg">
+      <div className="w-20 h-20 bg-gradient-to-br from-coral/20 to-turquoise/20 rounded-full flex items-center justify-center mb-6 animate-pulse-custom">
+        <FileText className="text-gray-400" size={32} />
       </div>
-      <h3 className="text-lg font-medium text-gray-500 mb-2">Chưa khả dụng</h3>
-      <p className="text-gray-400 text-sm">Nội dung sẽ được thêm vào sau</p>
+      <h3 className="text-xl font-semibold text-gray-600 mb-3">Chưa có nội dung</h3>
+      <p className="text-gray-500">Nội dung sẽ được thêm vào sau</p>
     </div>
   );
 }
