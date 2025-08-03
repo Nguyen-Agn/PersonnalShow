@@ -191,7 +191,7 @@ export function AddContentModal({ isOpen, onClose, editingItem }: AddContentModa
             <>
               <div>
                 <Label>Tải ảnh lên</Label>
-                <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-coral transition-colors duration-300 cursor-pointer">
+                <div className="relative border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-coral transition-colors duration-300 overflow-hidden">
                   <Upload className="mx-auto text-gray-400 mb-4" size={32} />
                   <p className="text-gray-500 mb-2">Thêm ảnh</p>
                   <p className="text-sm text-gray-400">PNG, JPG lên đến 10MB</p>
@@ -199,7 +199,7 @@ export function AddContentModal({ isOpen, onClose, editingItem }: AddContentModa
                     type="file"
                     accept="image/*"
                     onChange={handleFileChange}
-                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                   />
                 </div>
                 {selectedFile && (
@@ -239,7 +239,7 @@ export function AddContentModal({ isOpen, onClose, editingItem }: AddContentModa
               
               <div>
                 <Label>Tải video lên</Label>
-                <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-coral transition-colors duration-300 cursor-pointer">
+                <div className="relative border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-coral transition-colors duration-300 overflow-hidden">
                   <Upload className="mx-auto text-gray-400 mb-4" size={32} />
                   <p className="text-gray-500 mb-2">Tải video lên</p>
                   <p className="text-sm text-gray-400">MP4, AVI lên đến 100MB</p>
@@ -247,7 +247,7 @@ export function AddContentModal({ isOpen, onClose, editingItem }: AddContentModa
                     type="file"
                     accept="video/*"
                     onChange={handleFileChange}
-                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                   />
                 </div>
               </div>

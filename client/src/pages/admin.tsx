@@ -299,10 +299,23 @@ export function AdminPage() {
                     
                     <div>
                       <Label>Ảnh đại diện</Label>
-                      <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-coral transition-colors duration-300 cursor-pointer">
+                      <div className="relative border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-coral transition-colors duration-300 overflow-hidden">
                         <Upload className="mx-auto text-gray-400 mb-4" size={32} />
                         <p className="text-gray-500 mb-2">Thêm ảnh</p>
                         <p className="text-sm text-gray-400">PNG, JPG lên đến 10MB</p>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) {
+                              // In a real app, you would upload the file and get a URL
+                              const mockUrl = URL.createObjectURL(file);
+                              console.log("Selected file:", file.name, "URL:", mockUrl);
+                            }
+                          }}
+                        />
                       </div>
                     </div>
                   </div>
