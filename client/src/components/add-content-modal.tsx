@@ -13,7 +13,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import type { ContentItem, InsertContentItem } from "@shared/schema";
-import { ObjectUploader } from "@/components/ObjectUploader";
+import { ObjectUploader } from "@/components/ObjectUploader"; 
+import { OfflineStorage } from "@/lib/offlineStorage";
 import type { UploadResult } from "@uppy/core";
 
 const contentFormSchema = z.object({
@@ -252,6 +253,18 @@ export function AddContentModal({ isOpen, onClose, editingItem, selectedSectionI
                         });
                       }).catch(error => {
                         console.error('Error setting file ACL:', error);
+                        // Store in offline storage for later sync
+                        OfflineStorage.saveOfflineFile({
+                          url: uploadURL,
+                          timestamp: Date.now(),
+                          name: `image_${Date.now()}`,
+                          type: 'content'
+                        });
+                        toast({
+                          title: "Chế độ offline",
+                          description: "Ảnh đã được lưu tạm thời, sẽ đồng bộ khi có kết nối!",
+                          variant: "default"
+                        });
                       });
                     }
                   }}
@@ -328,6 +341,18 @@ export function AddContentModal({ isOpen, onClose, editingItem, selectedSectionI
                         });
                       }).catch(error => {
                         console.error('Error setting file ACL:', error);
+                        // Store in offline storage for later sync
+                        OfflineStorage.saveOfflineFile({
+                          url: uploadURL,
+                          timestamp: Date.now(),
+                          name: `video_${Date.now()}`,
+                          type: 'content'
+                        });
+                        toast({
+                          title: "Chế độ offline",
+                          description: "Video đã được lưu tạm thời, sẽ đồng bộ khi có kết nối!",
+                          variant: "default"
+                        });
                       });
                     }
                   }}

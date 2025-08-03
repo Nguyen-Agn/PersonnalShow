@@ -10,12 +10,15 @@ import { Plus, FileText, Image, Video, Clock, Upload, Save, Trash2, Layers, Edit
 import { ContentCard } from "@/components/content-card";
 import { AddContentModal } from "@/components/add-content-modal";
 import { CreateSectionModal } from "@/components/create-section-modal";
+import { ObjectUploader } from "@/components/ObjectUploader";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { OfflineStorage } from "@/lib/offlineStorage";
 import type { IntroSection, ContentItem, OtherSection, InsertIntroSection, InsertOtherSection, CustomSection, InsertCustomSection } from "@shared/schema";
+import type { UploadResult } from "@uppy/core";
 
 const skillsSchema = z.object({
   skills: z.array(z.object({
@@ -54,6 +57,7 @@ export function AdminPage() {
   const {
     register: registerIntro,
     handleSubmit: handleSubmitIntro,
+    setValue: setIntroValue,
     formState: { errors: introErrors }
   } = useForm<InsertIntroSection>({
     defaultValues: {
@@ -482,24 +486,62 @@ export function AdminPage() {
                     
                     <div>
                       <Label>Ảnh đại diện</Label>
-                      <div className="relative border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-coral transition-colors duration-300 overflow-hidden">
-                        <Upload className="mx-auto text-gray-400 mb-4" size={32} />
-                        <p className="text-gray-500 mb-2">Thêm ảnh</p>
-                        <p className="text-sm text-gray-400">PNG, JPG lên đến 10MB</p>
-                        <input
-                          type="file"
-                          accept="image/*"
-                          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
-                          onChange={(e) => {
-                            const file = e.target.files?.[0];
-                            if (file) {
-                              // In a real app, you would upload the file and get a URL
-                              const mockUrl = URL.createObjectURL(file);
-                              console.log("Selected file:", file.name, "URL:", mockUrl);
-                            }
-                          }}
-                        />
-                      </div>
+                      <ObjectUploader
+                        maxNumberOfFiles={1}
+                        maxFileSize={10485760} // 10MB
+                        onGetUploadParameters={async () => {
+                          const response = await fetch('/api/objects/upload', {
+                            method: 'POST'
+                          });
+                          const data = await response.json();
+                          return {
+                            method: 'PUT' as const,
+                            url: data.uploadURL
+                          };
+                        }}
+                        onComplete={(result: UploadResult<Record<string, unknown>, Record<string, unknown>>) => {
+                          if (result.successful.length > 0) {
+                            const uploadURL = result.successful[0].uploadURL;
+                            
+                            // Set ACL policy for the uploaded file
+                            fetch('/api/uploaded-content', {
+                              method: 'PUT',
+                              headers: {
+                                'Content-Type': 'application/json'
+                              },
+                              body: JSON.stringify({ fileURL: uploadURL })
+                            }).then(res => res.json()).then(data => {
+                              setIntroValue("profileImage", data.objectPath);
+                              toast({
+                                title: "Thành công",
+                                description: "Ảnh đại diện đã được tải lên!"
+                              });
+                            }).catch(error => {
+                              console.error('Error setting file ACL:', error);
+                              // Fallback to offline storage
+                              OfflineStorage.saveOfflineFile({
+                                url: uploadURL,
+                                timestamp: Date.now(),
+                                name: `profile_${Date.now()}`,
+                                type: 'profile'
+                              });
+                              setIntroValue("profileImage", uploadURL);
+                              toast({
+                                title: "Chế độ offline", 
+                                description: "Ảnh đã được lưu tạm thời. Sẽ tự động đồng bộ khi có kết nối!",
+                                variant: "default"
+                              });
+                            });
+                          }
+                        }}
+                        buttonClassName="w-full border-2 border-dashed border-gray-300 hover:border-coral transition-colors duration-300 p-8 text-center bg-transparent text-gray-500 hover:text-coral hover:bg-coral/5"
+                      >
+                        <div className="flex flex-col items-center gap-2">
+                          <Upload size={32} />
+                          <span>Thêm ảnh đại diện</span>
+                          <p className="text-sm text-gray-400">PNG, JPG lên đến 10MB</p>
+                        </div>
+                      </ObjectUploader>
                     </div>
                   </div>
                   
