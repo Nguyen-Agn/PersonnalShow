@@ -136,6 +136,23 @@ Nếu gặp vấn đề:
 3. Thử chạy `npm run check` để kiểm tra TypeScript errors
 4. Khởi động lại terminal và thử lại
 
+## Deploy lên Vercel
+
+Dự án đã được tối ưu hóa để deploy lên Vercel:
+
+1. Push code lên GitHub
+2. Connect GitHub repo với Vercel
+3. Deploy tự động với config từ `vercel.json`
+
+Chi tiết đầy đủ trong file `DEPLOYMENT_GUIDE.md`
+
+### Tính năng sau deploy:
+✅ Website hoạt động đầy đủ  
+✅ Admin panel (password: admin2025)  
+✅ Responsive mobile  
+⚠️ File upload chỉ ở chế độ offline  
+⚠️ Data reset khi redeploy (dùng in-memory storage)  
+
 ## License
 
 MIT License

@@ -1,0 +1,10 @@
+{
+  "name": "portfolio-client",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "vite build --outDir ../dist"
+  },
+  "devDependencies": {
+    "vite": "^5.4.19"
+  }
+}
