@@ -41,11 +41,102 @@ export function HomePage() {
                 {intro?.description || "Tôi tạo ra những trải nghiệm số đẹp và có ý nghĩa thông qua thiết kế sáng tạo và công nghệ hiện đại."}
               </p>
               <div className="flex flex-wrap gap-4 animate-fade-in-up" style={{animationDelay: '0.9s'}}>
-                <Button className="bg-coral text-white hover:bg-turquoise btn-hover-lift shadow-lg hover:shadow-xl border-0">
+                <Button 
+                  onClick={async () => {
+                    try {
+                      // Fetch thông tin từ API để tạo CV động
+                      const [introRes, otherRes] = await Promise.all([
+                        fetch('/api/intro'),
+                        fetch('/api/other')
+                      ]);
+                      
+                      const intro = await introRes.json();
+                      const other = await otherRes.json();
+                      
+                      // Tạo CV text từ data thực
+                      const cvContent = `
+CURRICULUM VITAE
+
+Họ và tên: ${intro?.name || 'Creative Designer'}
+Email: ${other?.contactInfo?.email || 'hello@portfolio.com'}  
+Điện thoại: ${other?.contactInfo?.phone || '+84 123 456 789'}
+Địa chỉ: ${other?.contactInfo?.location || 'Hà Nội, Việt Nam'}
+
+=== GIỚI THIỆU ===
+
+${intro?.description || 'Tôi tạo ra những trải nghiệm số đẹp và có ý nghĩa thông qua thiết kế sáng tạo và công nghệ hiện đại.'}
+
+=== KỸ NĂNG CHUYÊN MÔN ===
+
+${other?.skills?.map(skill => `• ${skill.name}: ${skill.description}`).join('\n') || 
+'• UI/UX Design: Thiết kế giao diện người dùng sáng tạo\n• Frontend: Phát triển giao diện web hiện đại\n• Mobile Design: Thiết kế ứng dụng di động'}
+
+=== THÔNG TIN LIÊN HỆ ===
+
+${other?.socialLinks?.github ? `GitHub: ${other.socialLinks.github}` : ''}
+${other?.socialLinks?.facebook ? `Facebook: ${other.socialLinks.facebook}` : ''}
+${other?.socialLinks?.zalo ? `Zalo: ${other.socialLinks.zalo}` : ''}
+
+=== DỰ ÁN PORTFOLIO ===
+
+Truy cập portfolio đầy đủ tại: ${window.location.origin}
+
+Cập nhật: ${new Date().toLocaleDateString('vi-VN')}
+                      `.trim();
+
+                      const blob = new Blob([cvContent], { type: 'text/plain;charset=utf-8' });
+                      const url = window.URL.createObjectURL(blob);
+                      const link = document.createElement('a');
+                      link.href = url;
+                      link.download = `CV-${intro?.name?.replace(/\s+/g, '-') || 'Portfolio'}.txt`;
+                      document.body.appendChild(link);
+                      link.click();
+                      document.body.removeChild(link);
+                      window.URL.revokeObjectURL(url);
+                    } catch (error) {
+                      console.error('Error downloading CV:', error);
+                      // Fallback với nội dung cơ bản
+                      const fallbackContent = `
+CURRICULUM VITAE
+
+Họ và tên: Creative Designer
+Email: hello@portfolio.com
+Điện thoại: +84 123 456 789
+Website: ${window.location.origin}
+
+Vui lòng truy cập website để xem portfolio đầy đủ.
+                      `.trim();
+                      
+                      const blob = new Blob([fallbackContent], { type: 'text/plain;charset=utf-8' });
+                      const url = window.URL.createObjectURL(blob);
+                      const link = document.createElement('a');
+                      link.href = url;
+                      link.download = 'CV-Portfolio.txt';
+                      document.body.appendChild(link);
+                      link.click();
+                      document.body.removeChild(link);
+                      window.URL.revokeObjectURL(url);
+                    }
+                  }}
+                  className="bg-coral text-white hover:bg-turquoise btn-hover-lift shadow-lg hover:shadow-xl border-0"
+                >
                   <Download className="mr-2" size={16} />
                   Tải CV
                 </Button>
-                <Button variant="outline" className="border-2 border-turquoise text-turquoise hover:bg-turquoise hover:text-white btn-hover-lift border-0">
+                <Button 
+                  onClick={() => {
+                    // Scroll đến phần liên hệ
+                    const contactSection = document.getElementById('other');
+                    if (contactSection) {
+                      contactSection.scrollIntoView({ behavior: 'smooth' });
+                    } else {
+                      // Fallback: mở email client
+                      window.location.href = 'mailto:hello@portfolio.com?subject=Liên hệ từ Portfolio&body=Xin chào, tôi muốn liên hệ với bạn...';
+                    }
+                  }}
+                  variant="outline" 
+                  className="border-2 border-turquoise text-turquoise hover:bg-turquoise hover:text-white btn-hover-lift border-0"
+                >
                   <Mail className="mr-2" size={16} />
                   Liên hệ
                 </Button>
@@ -87,6 +178,7 @@ export function HomePage() {
         return (
           <section 
             key={section.id} 
+            id={`section-${section.id}`}
             className={`py-20 relative overflow-hidden ${
               sectionIndex % 2 === 0 
                 ? 'bg-gradient-to-br from-gray-50 to-white' 
