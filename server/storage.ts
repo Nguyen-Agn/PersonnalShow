@@ -82,6 +82,20 @@ export class MemStorage implements IStorage {
       ],
       updatedAt: new Date(),
     };
+
+    // Create default section
+    const defaultSection: CustomSection = {
+      id: "default",
+      title: "Trang chính",
+      description: "Nội dung hiển thị trên trang chủ",
+      type: "grid",
+      order: "0",
+      backgroundColor: "bg-white",
+      items: [],
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    this.customSections.set("default", defaultSection);
   }
 
   async getIntroSection(): Promise<IntroSection | undefined> {
@@ -126,6 +140,7 @@ export class MemStorage implements IStorage {
       content: content.content || null,
       mediaUrl: content.mediaUrl || null,
       excerpt: content.excerpt || null,
+      sectionId: content.sectionId || "default",
       createdAt: now,
       updatedAt: now,
     };

@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Plus, FileText, Image, Video, Clock, Upload, Save, Trash2, Layers, Edit, MoreVertical } from "lucide-react";
 import { ContentCard } from "@/components/content-card";
 import { AddContentModal } from "@/components/add-content-modal";
+import { CreateSectionModal } from "@/components/create-section-modal";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { useForm, useFieldArray } from "react-hook-form";
@@ -29,6 +30,7 @@ export function AdminPage() {
   const queryClient = useQueryClient();
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<ContentItem | undefined>();
+  const [isCreateSectionModalOpen, setIsCreateSectionModalOpen] = useState(false);
 
   const { data: intro } = useQuery<IntroSection>({
     queryKey: ["/api/intro"],
@@ -235,6 +237,32 @@ export function AdminPage() {
 
   const onSubmitOther = (data: InsertOtherSection) => {
     saveOtherMutation.mutate(data);
+  };
+
+  const createSectionMutation = useMutation({
+    mutationFn: async (data: InsertCustomSection) => {
+      const response = await apiRequest("POST", "/api/sections", data);
+      return response.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: "Thành công",
+        description: "Đã tạo section mới",
+      });
+      queryClient.invalidateQueries({ queryKey: ["/api/sections"] });
+      setIsCreateSectionModalOpen(false);
+    },
+    onError: (error) => {
+      toast({
+        title: "Lỗi",
+        description: "Không thể tạo section",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const handleCreateSection = (data: InsertCustomSection) => {
+    createSectionMutation.mutate(data);
   };
 
   const totalImages = contentItems.filter(item => item.type === "image").length;
@@ -452,9 +480,7 @@ export function AdminPage() {
                 <div className="mb-6 flex justify-between items-center">
                   <h3 className="text-lg font-semibold text-slate">Quản lý Sections</h3>
                   <Button
-                    onClick={() => {
-                      // TODO: Add create section modal
-                    }}
+                    onClick={() => setIsCreateSectionModalOpen(true)}
                     className="bg-turquoise text-white hover:bg-sky transition-colors duration-300"
                   >
                     <Plus className="mr-2" size={16} />
@@ -759,6 +785,12 @@ export function AdminPage() {
         isOpen={isAddModalOpen}
         onClose={handleCloseModal}
         editingItem={editingItem}
+      />
+
+      <CreateSectionModal
+        isOpen={isCreateSectionModalOpen}
+        onClose={() => setIsCreateSectionModalOpen(false)}
+        onSubmit={handleCreateSection}
       />
     </div>
   );

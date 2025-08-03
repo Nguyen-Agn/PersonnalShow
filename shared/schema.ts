@@ -19,6 +19,7 @@ export const contentItems = pgTable("content_items", {
   content: text("content"), // text content or description
   mediaUrl: text("media_url"), // image or video URL
   excerpt: text("excerpt"),
+  sectionId: varchar("section_id").default("default"), // section to display in
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });

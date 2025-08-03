@@ -20,6 +20,7 @@ const contentFormSchema = z.object({
   content: z.string().optional(),
   mediaUrl: z.string().optional(),
   excerpt: z.string().optional(),
+  sectionId: z.string().default("default"),
 });
 
 type ContentFormData = z.infer<typeof contentFormSchema>;
@@ -50,8 +51,10 @@ export function AddContentModal({ isOpen, onClose, editingItem }: AddContentModa
       content: editingItem.content || "",
       mediaUrl: editingItem.mediaUrl || "",
       excerpt: editingItem.excerpt || "",
+      sectionId: editingItem.sectionId || "default",
     } : {
       type: "text",
+      sectionId: "default",
     }
   });
 
