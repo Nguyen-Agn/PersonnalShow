@@ -1,13 +1,15 @@
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Palette, Settings, ArrowLeft } from "lucide-react";
+import { Palette, Settings, ArrowLeft, LogOut } from "lucide-react";
 
 interface NavigationProps {
   isAdminMode: boolean;
   onToggleAdmin: () => void;
+  onLogout?: () => void;
+  isAuthenticated?: boolean;
 }
 
-export function Navigation({ isAdminMode, onToggleAdmin }: NavigationProps) {
+export function Navigation({ isAdminMode, onToggleAdmin, onLogout, isAuthenticated }: NavigationProps) {
   const [location] = useLocation();
 
   if (isAdminMode) {
@@ -19,14 +21,24 @@ export function Navigation({ isAdminMode, onToggleAdmin }: NavigationProps) {
               <Settings className="text-coral mr-2" size={20} />
               Quản trị nội dung
             </h1>
-            <Button
-              onClick={onToggleAdmin}
-              variant="outline"
-              className="bg-gray-500 text-white border-gray-500 hover:bg-gray-600"
-            >
-              <ArrowLeft className="mr-2" size={16} />
-              Quay lại
-            </Button>
+            <div className="flex space-x-2">
+              <Button
+                onClick={onLogout}
+                variant="outline"
+                className="border-red-300 text-red-600 hover:bg-red-50"
+              >
+                <LogOut className="mr-2" size={16} />
+                Đăng xuất
+              </Button>
+              <Button
+                onClick={onToggleAdmin}
+                variant="outline"
+                className="bg-gray-500 text-white border-gray-500 hover:bg-gray-600"
+              >
+                <ArrowLeft className="mr-2" size={16} />
+                Quay lại
+              </Button>
+            </div>
           </div>
         </div>
       </nav>

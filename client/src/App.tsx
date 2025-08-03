@@ -9,9 +9,24 @@ import { HomePage } from "@/pages/home";
 import { AdminPage } from "@/pages/admin";
 import NotFound from "@/pages/not-found";
 import { localStorage } from "@/lib/local-storage";
+import { AdminLogin } from "@/components/admin-login";
 
 function Router() {
   const [isAdminMode, setIsAdminMode] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [showLoginDialog, setShowLoginDialog] = useState(false);
+
+  // Check authentication on load
+  useEffect(() => {
+    const authStatus = window.localStorage.getItem("adminAuthenticated");
+    const loginTime = window.localStorage.getItem("adminLoginTime");
+    
+    // Session expires after 24 hours
+    const sessionExpiry = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+    const isSessionValid = loginTime && (Date.now() - parseInt(loginTime)) < sessionExpiry;
+    
+    setIsAuthenticated(authStatus === "true" && !!isSessionValid);
+  }, []);
 
   // Sync data with localStorage for offline functionality
   useEffect(() => {
@@ -22,7 +37,7 @@ function Router() {
       const otherData = queryClient.getQueryData(["/api/other"]);
       
       if (introData) localStorage.saveIntro(introData);
-      if (contentData) localStorage.saveContent(contentData);
+      if (contentData && Array.isArray(contentData)) localStorage.saveContent(contentData);
       if (otherData) localStorage.saveOther(otherData);
     };
 
@@ -32,11 +47,42 @@ function Router() {
     return unsubscribe;
   }, []);
 
+  const handleToggleAdmin = () => {
+    if (isAdminMode) {
+      // Logout from admin mode
+      setIsAdminMode(false);
+    } else {
+      // Check authentication before entering admin mode
+      if (isAuthenticated) {
+        setIsAdminMode(true);
+      } else {
+        setShowLoginDialog(true);
+      }
+    }
+  };
+
+  const handleLoginSuccess = () => {
+    setIsAuthenticated(true);
+    setIsAdminMode(true);
+  };
+
+  const handleLogout = () => {
+    window.localStorage.removeItem("adminAuthenticated");
+    window.localStorage.removeItem("adminLoginTime");
+    setIsAuthenticated(false);
+    setIsAdminMode(false);
+  };
+
   return (
     <>
-      <Navigation isAdminMode={isAdminMode} onToggleAdmin={() => setIsAdminMode(!isAdminMode)} />
+      <Navigation 
+        isAdminMode={isAdminMode} 
+        onToggleAdmin={handleToggleAdmin}
+        onLogout={handleLogout}
+        isAuthenticated={isAuthenticated}
+      />
       
-      {isAdminMode ? (
+      {isAdminMode && isAuthenticated ? (
         <AdminPage />
       ) : (
         <Switch>
@@ -44,6 +90,12 @@ function Router() {
           <Route component={NotFound} />
         </Switch>
       )}
+
+      <AdminLogin
+        isOpen={showLoginDialog}
+        onClose={() => setShowLoginDialog(false)}
+        onSuccess={handleLoginSuccess}
+      />
     </>
   );
 }

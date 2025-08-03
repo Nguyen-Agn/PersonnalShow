@@ -44,7 +44,7 @@ export class MemStorage implements IStorage {
       title: "Xin chào, tôi là",
       name: "Creative Designer",
       description: "Tôi tạo ra những trải nghiệm số đẹp và có ý nghĩa thông qua thiết kế sáng tạo và công nghệ hiện đại.",
-      profileImage: null,
+      profileImage: "",
       updatedAt: new Date(),
     };
 
@@ -74,12 +74,14 @@ export class MemStorage implements IStorage {
       this.introSection = {
         ...this.introSection,
         ...intro,
+        profileImage: intro.profileImage || "",
         updatedAt: new Date(),
       };
     } else {
       this.introSection = {
         id: randomUUID(),
         ...intro,
+        profileImage: intro.profileImage || "",
         updatedAt: new Date(),
       };
     }
@@ -102,6 +104,9 @@ export class MemStorage implements IStorage {
     const newItem: ContentItem = {
       id,
       ...content,
+      content: content.content || null,
+      mediaUrl: content.mediaUrl || null,
+      excerpt: content.excerpt || null,
       createdAt: now,
       updatedAt: now,
     };
@@ -136,13 +141,23 @@ export class MemStorage implements IStorage {
     if (this.otherSection) {
       this.otherSection = {
         ...this.otherSection,
-        ...other,
+        contactInfo: other.contactInfo || null,
+        socialLinks: other.socialLinks ? {
+          linkedin: other.socialLinks.linkedin || undefined,
+          github: other.socialLinks.github || undefined,
+          dribbble: other.socialLinks.dribbble || undefined,
+        } : null,
         updatedAt: new Date(),
       };
     } else {
       this.otherSection = {
         id: randomUUID(),
-        ...other,
+        contactInfo: other.contactInfo || null,
+        socialLinks: other.socialLinks ? {
+          linkedin: other.socialLinks.linkedin || undefined,
+          github: other.socialLinks.github || undefined,
+          dribbble: other.socialLinks.dribbble || undefined,
+        } : null,
         updatedAt: new Date(),
       };
     }

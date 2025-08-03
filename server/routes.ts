@@ -62,7 +62,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const content = await storage.updateContentItem(req.params.id, validatedData);
       res.json(content);
     } catch (error) {
-      if (error.message === "Content item not found") {
+      if (error instanceof Error && error.message === "Content item not found") {
         return res.status(404).json({ message: error.message });
       }
       res.status(400).json({ message: "Invalid content data", error });
