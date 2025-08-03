@@ -54,7 +54,26 @@ export function AddContentModal({ isOpen, onClose, editingItem, selectedSectionI
       excerpt: editingItem.excerpt || "",
       sectionId: editingItem.sectionId || selectedSectionId,
     } : {
+      title: "",
       type: "text",
+      content: "",
+      mediaUrl: "",
+      excerpt: "",
+      sectionId: selectedSectionId,
+    },
+    values: editingItem ? {
+      title: editingItem.title,
+      type: editingItem.type as "text" | "image" | "video",
+      content: editingItem.content || "",
+      mediaUrl: editingItem.mediaUrl || "",
+      excerpt: editingItem.excerpt || "",
+      sectionId: editingItem.sectionId || selectedSectionId,
+    } : {
+      title: "",
+      type: "text",
+      content: "",
+      mediaUrl: "",
+      excerpt: "",
       sectionId: selectedSectionId,
     }
   });
@@ -125,14 +144,19 @@ export function AddContentModal({ isOpen, onClose, editingItem, selectedSectionI
   };
 
   const onSubmit = (data: ContentFormData) => {
+    console.log("Form data:", data);
+    console.log("Selected section ID:", selectedSectionId);
+    
     const submitData: InsertContentItem = {
       title: data.title,
       type: data.type,
       content: data.content || null,
       mediaUrl: data.mediaUrl || null,
       excerpt: data.excerpt || null,
-      sectionId: data.sectionId || selectedSectionId,
+      sectionId: selectedSectionId, // Force use selectedSectionId
     };
+
+    console.log("Submit data:", submitData);
 
     if (editingItem) {
       updateMutation.mutate(submitData);
@@ -151,7 +175,7 @@ export function AddContentModal({ isOpen, onClose, editingItem, selectedSectionI
           <DialogDescription>
             {editingItem 
               ? "Cập nhật thông tin nội dung của bạn."
-              : "Tạo nội dung mới cho portfolio."
+              : `Tạo nội dung mới cho section. Selected: ${selectedSectionId}`
             }
           </DialogDescription>
         </DialogHeader>
