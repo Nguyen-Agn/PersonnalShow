@@ -393,9 +393,6 @@ export function AdminPage() {
             <TabsTrigger value="intro" className="px-6 py-3 data-[state=active]:bg-coral data-[state=active]:text-white">
               Giới thiệu
             </TabsTrigger>
-            <TabsTrigger value="content" className="px-6 py-3 data-[state=active]:bg-coral data-[state=active]:text-white">
-              Nội dung
-            </TabsTrigger>
             <TabsTrigger value="sections" className="px-6 py-3 data-[state=active]:bg-coral data-[state=active]:text-white">
               <Layers className="mr-2" size={16} />
               Sections
@@ -491,43 +488,7 @@ export function AdminPage() {
             </Card>
           </TabsContent>
 
-          {/* Content Tab */}
-          <TabsContent value="content">
-            <Card>
-              <CardContent className="p-6">
-                <div className="mb-6 flex justify-between items-center">
-                  <h3 className="text-lg font-semibold text-slate">Quản lý nội dung</h3>
-                  <Button
-                    onClick={() => setIsAddModalOpen(true)}
-                    className="bg-turquoise text-white hover:bg-sky transition-colors duration-300"
-                  >
-                    <Plus className="mr-2" size={16} />
-                    Thêm nội dung
-                  </Button>
-                </div>
 
-                <div className="space-y-4">
-                  {contentItems.length > 0 ? (
-                    contentItems.map((item) => (
-                      <ContentCard
-                        key={item.id}
-                        item={item}
-                        isAdmin={true}
-                        onEdit={handleEdit}
-                        onDelete={handleDelete}
-                      />
-                    ))
-                  ) : (
-                    <div className="text-center py-12">
-                      <FileText className="mx-auto text-gray-400 mb-4" size={48} />
-                      <h3 className="text-lg font-medium text-gray-500 mb-2">Chưa có nội dung</h3>
-                      <p className="text-gray-400">Thêm nội dung đầu tiên của bạn</p>
-                    </div>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
 
           {/* Sections Tab */}
           <TabsContent value="sections">

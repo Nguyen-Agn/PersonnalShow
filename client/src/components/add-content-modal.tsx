@@ -68,16 +68,17 @@ export function AddContentModal({ isOpen, onClose, editingItem, selectedSectionI
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/content"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/sections"] });
       toast({
         title: "Thành công",
-        description: "Nội dung đã được thêm thành công",
+        description: "Item đã được thêm thành công",
       });
       handleClose();
     },
     onError: () => {
       toast({
         title: "Lỗi",
-        description: "Không thể thêm nội dung",
+        description: "Không thể thêm item",
         variant: "destructive",
       });
     }
@@ -90,16 +91,17 @@ export function AddContentModal({ isOpen, onClose, editingItem, selectedSectionI
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/content"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/sections"] });
       toast({
         title: "Thành công",
-        description: "Nội dung đã được cập nhật thành công",
+        description: "Item đã được cập nhật thành công",
       });
       handleClose();
     },
     onError: () => {
       toast({
         title: "Lỗi",
-        description: "Không thể cập nhật nội dung",
+        description: "Không thể cập nhật item",
         variant: "destructive",
       });
     }
@@ -129,6 +131,7 @@ export function AddContentModal({ isOpen, onClose, editingItem, selectedSectionI
       content: data.content || null,
       mediaUrl: data.mediaUrl || null,
       excerpt: data.excerpt || null,
+      sectionId: data.sectionId || selectedSectionId,
     };
 
     if (editingItem) {
